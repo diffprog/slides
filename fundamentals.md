@@ -1,13 +1,15 @@
 class: middle, center, title-slide
 
 $$
+\gdef\u{\bm{u}}
+\gdef\v{\bm{v}}
 \gdef\x{\bm{x}}
 \gdef\w{\bm{w}}
-\gdef\v{\bm{v}}
 \gdef\RR{\mathbb{R}}
 \gdef\jac{\bm{\partial}}
 \gdef\cE{\mathcal{E}}
 \gdef\cF{\mathcal{F}}
+\gdef\cG{\mathcal{G}}
 $$
 
 # Differentiable programming
@@ -307,4 +309,158 @@ We can directly see $\partial f(\bm{W})$ as a **linear map** (a.k.a. **linear op
 
 ---
 
-## Jacobian-vector products
+## Jacobian-vector products (JVPs)
+
+Suppose $f \colon \cE \to \cF$,
+where $\cE$ and $\cF$ are general Euclidean spaces.
+
+We can see the directional derivative
+$$
+\v \mapsto \partial f(\w)[\v]
+$$
+as a linear map $\cE \to \cF$
+
+<br>
+
+--
+
+Therefore
+$$
+\partial f \colon \cE \to (\cE \to \cF)
+$$
+
+<br>
+
+--
+
+We rarely need to materialize the Jacobian $\jac f(\w)$ as a matrix.
+
+---
+
+## Example of JVP
+
+Let us go back to the example $f(\w) \coloneqq (\sigma(w\_1), \dots, \sigma(w\_P))$
+with Jacobian
+$$
+\bm{\partial} f(\w) 
+= \mathrm{diag}(\sigma'(w\_1), \dots, \sigma'(w\_P))
+\coloneqq \begin{pmatrix}
+    \sigma'(w\_1) & 0 & \ldots & 0 \\\\
+    0 & \ddots & \ddots & \vdots \\\\
+    \vdots & \ddots & \ddots & 0 \\\\
+    0 & \ldots & 0 & \sigma'(w\_P)
+\end{pmatrix} \in \RR^{P \times P}
+$$
+
+<br>
+
+--
+
+We can compute the JVP by element-wise multiplication
+$$
+\partial f(\w)[\v] = (\sigma'(w\_1), \dots, \sigma'(w\_P)) \circ \v
+$$
+
+<br>
+
+--
+
+Computational cost is $O(P)$ instead of $O(P^2)$ had we used a matrix-vector multiplication.
+
+---
+
+## Variations along outputs
+
+Consider a function $f \colon \RR^P \to \RR^M$
+
+Directional derivative and JVP: variations of $f$ along an **input** direction $\v \in \RR^P$
+
+--
+
+Instead, we may consider variations along an **output** direction $\u \in \RR^M$
+
+$$
+\nabla \langle \u, f \rangle(\w) = \jac f(\w)^\top \u
+$$
+
+<br>
+
+where
+
+$$
+\langle \u, f \rangle(\w) \coloneqq \langle \u, f(\w) \rangle \in \RR.
+$$
+
+<br>
+Using the concept of adjoint, this leads to the vector-Jacobian product.
+
+---
+
+## Adjoint maps
+
+The adjoint of a linear map
+$$
+l \colon \cE \to \cF
+$$
+is another linear map
+$$
+l^\* \colon \cF \to \cE
+$$
+and satisfies
+$$
+\langle l[\v], \u \rangle = \langle \v, l^\*[\u] \rangle
+$$
+<br>
+The adjoint is the counterpart of transpose for linear maps
+$$
+\langle \bm{A} \v, \u \rangle = \langle \v, \bm{A}^\top \u \rangle
+$$
+
+---
+
+## Vector-Jacobian products (VJPs)
+
+Suppose $f \colon \cE \to \cF$,
+where $\cE$ and $\cF$ are general Euclidean spaces.
+
+We can see
+$$
+\u \mapsto \partial f(\w)^\*[\u] = \nabla \langle \u, f \rangle(\w)
+$$
+as a linear map $\cF \to \cE$
+
+<br>
+
+--
+
+Therefore
+$$
+\partial f(\cdot)^\* \colon \cE \to (\cF \to \cE)
+$$
+
+---
+
+## Chain rule using linear maps
+
+Consider $f:\cE \rightarrow \cF$ and $g:\cF \rightarrow \cG$, where $\cE$,
+$\cF$ and $\cG$ are Euclidean spaces.
+
+<br>
+
+The JVP of $g \circ f$ is given for all $\v \in \cE$ by
+$$
+\partial (g\circ f)(\w)[\v] 
+= \partial g(f(\w))[\partial f(\w)[\v]]
+$$
+
+<br>
+
+The VJP of $g \circ f$ is given for all $\u \in \cG$ by
+$$
+\partial (g\circ f)(\w)^\*[\u] 
+= \partial f(\w)^\*[\partial g(f(\w))^\*[\u]].
+$$
+
+<br>
+
+These two formulas are the basis of forward-mode and reverse-mode autodiff!
