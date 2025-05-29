@@ -1,5 +1,15 @@
 class: middle, center, title-slide
 
+$$
+\gdef\x{\bm{x}}
+\gdef\w{\bm{w}}
+\gdef\v{\bm{v}}
+\gdef\RR{\mathbb{R}}
+\gdef\jac{\bm{\partial}}
+\gdef\cE{\mathcal{E}}
+\gdef\cF{\mathcal{F}}
+$$
+
 # Differentiable programming
 
 Lecture 1: Fundamentals
@@ -100,8 +110,8 @@ provided that the limit exists.
 
 .center.width-50[![](./figures/fundamentals/dir_deriv.png)]
 
-Directional derivative of the curve 
-$f:\mathbb{R} \rightarrow \mathbb{R}^2$ in direction $v=1$ is the tangent
+*Directional derivative of the curve 
+$f:\mathbb{R} \rightarrow \mathbb{R}^2$ in direction $v=1$ is the tangent*
 
 ---
 
@@ -132,7 +142,7 @@ at their values $w\_i$.
 
 ## Gradients
 
-- The gradient of a differentiable function $f: \mathbb{R}^P \rightarrow \mathbb{R}$
+The gradient of a differentiable function $f: \mathbb{R}^P \rightarrow \mathbb{R}$
 at a point $\bm{w} \in \mathbb{R}^P$ is defined as the vector of partial derivatives
 
 $$
@@ -145,11 +155,11 @@ $$
   \partial f(\bm{w})[\bm{e}\_P] \end{pmatrix} \in \mathbb{R}^P
 $$
 
-.center.width-50[![](./figures/fundamentals/gradient.png)]
-
 --
 
-- Using $\bm{v}=\sum_{i=1}^P v\_i \bm{e}\_i$ and the linearity of the directional derivative:
+<br><br>
+
+Using $\bm{v}=\sum_{i=1}^P v\_i \bm{e}\_i$ and the linearity of the directional derivative:
 
 $\partial f(\bm{w})[\bm{v}] 
 = \sum_{i=1}^P v\_i \partial f(\bm{w})[\bm{e}\_i]
@@ -159,10 +169,142 @@ $\partial f(\bm{w})[\bm{v}]
 
 ## Why is the gradient useful?
 
+We say that $\bm{v}$ is an **ascent direction** of $f$ from $\bm{w}$ if
+$$
+\langle \bm{v}, \nabla f(\bm{w}) \rangle > 0.
+$$
+
+--
+
+We can then seek the **steepest ascent direction**
+$$
+\argmax\_{\bm{v} \in \mathbb{R}^P, \\|\bm{v}\\|\_2 \leq 1}
+\langle \bm{v}, \nabla f(\bm{w}) \rangle
+= \argmax\_{\bm{v} \in \mathbb{R}^P, \\|\bm{v}\\|\_2 \le 1}
+\partial f(\bm{w})[\bm{v}]
+= \frac{\nabla f(\bm{w})}{\\|\nabla f(\bm{w})\\|\_2}
+$$
+
+<br>
+
+.center.width-50[![](./figures/fundamentals/gradient.png)]
+
 ---
 
 ## Jacobians
 
+The Jacobian of a differentiable function $f: \mathbb{R}^P \rightarrow \mathbb{R}^M$ at $\bm{w}$ is
+defined as the matrix gathering partial derivatives of each coordinate's function
+
+$$
+\bm{\partial} f (\bm{w}) 
+\coloneqq \begin{pmatrix}
+        \partial\_1 f\_1(\bm{w}) & \ldots & \partial\_P f\_1(\bm{w}) \\\\
+        \vdots & \ddots & \vdots \\\\
+        \partial\_1 f\_M(\bm{w}) & \ldots & \partial\_P f\_M(\bm{w})
+    \end{pmatrix} \in \mathbb{R}^{M \times P}
+$$
+
+<br>
+
+--
+
+The Jacobian can be represented by stacking columns of partial derivatives or rows
+of gradients,
+$$
+\bm{\partial} f (\w) 
+= \begin{pmatrix}
+        \partial\_1 f(\w), \ldots, \partial\_P f(\w)
+    \end{pmatrix} 
+  = \begin{pmatrix}
+    \nabla f\_1(\w)^\top \\\\
+    \vdots \\\\
+    \nabla f\_M(\w)^\top
+    \end{pmatrix} \in \mathbb{R}^{M \times P}
+$$
+
+--
+
+<br>
+
+Careful: if $f: \mathbb{R}^P \rightarrow \mathbb{R}$, then
+$\jac f(\w) = \nabla f(\w)^\top \in \RR^{1\times P}$
+
 ---
 
-## Special cases of the Jacobian
+## Example: Jacobian of an element-wise activation function σ
+
+Suppose $f \colon \RR^P \to \RR^P$ is defined as
+$$
+f(\w) 
+\coloneqq \begin{pmatrix}
+    \sigma(w\_1) \\\\
+    \vdots \\\\
+    \sigma(w\_P)
+\end{pmatrix}\in \RR^P
+$$
+Then
+$$
+\bm{\partial} f(\w) 
+= \mathrm{diag}(\sigma'(w\_1), \dots, \sigma'(w\_P))
+\coloneqq \begin{pmatrix}
+    \sigma'(w\_1) & 0 & \ldots & 0 \\\\
+    0 & \ddots & \ddots & \vdots \\\\
+    \vdots & \ddots & \ddots & 0 \\\\
+    0 & \ldots & 0 & \sigma'(w\_P)
+\end{pmatrix} \in \RR^{P \times P}
+$$
+
+---
+
+## Chain rule
+
+<br>
+
+Consider $f:\RR^P \rightarrow\RR^M$ and $g:\RR^M \rightarrow \RR^R$. Then,
+$$
+\underbrace{\jac (g\circ f)(\w)}\_{\RR^{R \times P}} = \underbrace{\jac g(f(\w))}\_{\RR^{R \times M}} \underbrace{\jac f(\w)}\_{\RR^{M \times P}}
+$$
+
+*Example:* $f$ a layer, $g$ another layer
+
+<br><br>
+
+--
+
+
+Consider $f:\RR^P \rightarrow\RR^M$ and $L:\RR^M \rightarrow \RR$. Then,
+$$
+\nabla (L \circ f)(\w) 
+= \jac L(f(\w)) \jac f(\w)
+= \jac f(\w)^\top \nabla L(f(\w))
+$$
+
+*Example:* $L$: loss function, $f$: neural network
+
+
+---
+
+## The need for linear maps
+
+Suppose we want to differentiate a function $f \colon \RR^{M \times D} \to M$ defined by
+$$f(\bm{W}) \coloneqq \bm{W} \x$$
+where $\bm{W} \in \RR^{M \times D}$ and $\x \in \RR^D$
+
+--
+
+We could always differentiate $\tilde{f}(\w)$ where $\w \coloneqq \mathrm{vec}(\bm{W}) \in \RR^{MD}$
+
+--
+
+However, the Jacobian $\jac \tilde{f}(\w) \in \RR^{M \times MD}$ can be shown to be extremely **sparse**
+
+--
+
+Fortunately, we never to materialize the Jacobian as a matrix.
+
+We can directly see $\partial f(\bm{W})$ as a **linear map** (a.k.a. **linear operator**)
+
+---
+
+## Jacobian-vector products

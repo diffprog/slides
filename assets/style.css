@@ -87,14 +87,15 @@ a:hover {
 }
 
 em {
-    color: #0288d1;
-    font-style: normal;
+    /*color: #0288d1;*/
+    font-style: italic;
 }
 
 strong {
-    color: #d11a01;
+    /*color: #d11a01;*/
+    color: #4D4D4F;
     font-style: normal;
-    font-weight: 300;
+    font-weight: 600;
 }
 
 .highlight{ 
