@@ -1,6 +1,7 @@
 class: middle, center, title-slide
 
 $$
+\gdef\e{\bm{e}}
 \gdef\u{\bm{u}}
 \gdef\v{\bm{v}}
 \gdef\x{\bm{x}}
@@ -29,7 +30,7 @@ Mathieu Blondel, Vincent Roulet
   * Gradients
   * Jacobians
   * Linear maps: JVPs and VJPs
-  * Hessians
+  * Hessians and Hessian-vector products (HVPs)
 - Probabilistic learning
 
 ---
@@ -464,3 +465,95 @@ $$
 <br>
 
 These two formulas are the basis of forward-mode and reverse-mode autodiff!
+
+---
+
+## Second derivatives
+
+The derivative $f'$ is itself a function so we may want to differentiate it.
+
+The seecond derivative $f^{(2)}(w)$ of a differentiable function $f:
+\RR \rightarrow \RR$ at $w \in \RR$ is defined as the derivative of $f'$ at
+$w$
+$$
+f^{(2)}(w) \coloneqq f''(w)
+\coloneqq \lim_{\delta \rightarrow 0} \frac{f'(w+\delta) - f'(w)}{\delta}
+$$
+provided that the limit exists
+
+.center.width-60[![](./figures/fundamentals/second_der.png)]
+
+---
+
+## Second directional derivatives
+
+The second directional derivative of $f:\RR^P \rightarrow \RR$ at
+$\w\in \RR^P$ along $\v, \v' \in \RR^P$ is defined as the directional
+derivative of $\w \mapsto \partial f(\w)[\v]$ along $\v'$,
+
+<br>
+$$
+\partial^2 f(\w)[\v, \v'] 
+\coloneqq \lim_{\delta \rightarrow 0} 
+\frac{\partial f(\w + \delta \v')[\v] - \partial f(\w)[\v]}{\delta},
+$$
+
+<br>
+
+provided that $\partial f(\w)[\v]$ is well-defined around $\w$ and that the
+limit exists.
+
+---
+
+## Second partial derivatives
+
+The second partial derivatives are defined
+
+<br>
+
+$$
+\partial_{i j}^2 f(\w) \coloneqq \partial^2 f(\w)[\e\_i, \e\_j] 
+$$
+
+<br>
+
+where $\e\_i$, $\e\_j$ the $i$-th and $j$-th canonical directions in $\RR^P$
+
+---
+
+## Hessians
+
+The Hessian of a twice differentiable function $f:\RR^P \rightarrow
+\RR$ at $\w$ is the $P \times P$ matrix gathering all second partial
+derivatives,
+
+<br>
+
+$$
+\nabla^2 f(\w) \coloneqq \begin{pmatrix}
+  \partial\_{11} f(\w) & \ldots & \partial\_{1P} f(\w) \\\\
+  \vdots & \ddots & \vdots \\\\
+  \partial\_{P1} f(\w) & \ldots & \partial\_{PP} f(\w)
+\end{pmatrix} \in \RR^{P \times P}
+$$
+
+<br>
+
+Note that for all $\v, \v' \in \RR^P$,
+$$
+\partial^2 f(\w)[\v, \v'] = \langle \v, \nabla^2 f(\w) \v'\rangle
+$$
+
+---
+
+## Hessian-vector products
+
+Oftentimes, we don't need the whole Hessian but only need to multiply with it.
+
+Consider the function $f \colon \cE \to \RR$.
+
+Then for any $\w, \v \in \cE$, the linear map
+$$
+\v \mapsto \nabla^2 f(\w)[\v]
+$$ 
+is called the Hessian-vector product (HVP).
