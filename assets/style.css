@@ -465,12 +465,12 @@ td {
 .title-slide:after {
     content: '';
     background: url("../assets/gdm_logo.png") no-repeat;
-    background-size: 75% 75%;
+    background-size: 50% 50%;
     width: 357px;
     height: 48px;
     position: absolute;
+    left: 18em;
     bottom: -0.5em;
-    left: 0.5em;
     display: inline-block;
 }
 
