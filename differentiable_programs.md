@@ -27,6 +27,8 @@ Mathieu Blondel, Vincent Roulet
   * Directed acyclic graphs (DAGs)
   * Computation graphs
 - Control flows
+  * Step functions
+  * Comparison operators
 
 ---
 
@@ -50,7 +52,7 @@ $$
 \begin{aligned}
 f(\s\_0)
 &= (f\_K \circ \dots \circ f\_2 \circ f\_1)(\s\_0) \\\\
-&= f\_K(\dots f\_2(f\_1(\s\_0))).
+&= f\_K(\dots f\_2(f\_1(\s\_0)))
 \end{aligned}
 $$
 
@@ -156,3 +158,76 @@ Functions and output variables are represented by the same nodes.
 .center.width-70[![](./figures/differentiable_programs/graph2.png)]
 
 Functions and variables are represented by a disjoint set of nodes (bipartite graph).
+
+---
+
+## Heaviside step function
+
+$$
+\mathrm{step}(u)
+\coloneqq \begin{cases}
+    1 &\text{ if } ~ u \ge 0 \\\\
+    0 &\text{ otherwise } 
+\end{cases}
+$$
+It is a function from $\RR$ to $\\{0,1\\}$.
+
+<br>
+
+.center.width-70[![](./figures/differentiable_programs/step_function.png)]
+
+---
+
+## Inequality operators
+
+Greater than
+$$
+\mathrm{gt}(u\_1, u\_2)
+\coloneqq
+\begin{cases}
+1 &\text{ if } u\_1 \ge u\_2 \\\\
+0 &\text{ otherwise }
+\end{cases}
+= \mathrm{step}(u\_1 - u\_2)
+$$
+
+Less than
+$$
+\mathrm{lt}(u\_1, u\_2)
+\coloneqq
+\begin{cases}
+1 &\text{ if } u\_1 \le u\_2 \\\\
+0 &\text{ otherwise }
+\end{cases}
+= \mathrm{step}(u\_2 - u\_1)
+$$
+
+.center.width-50[![](./figures/differentiable_programs/greater_than.png)]
+
+---
+
+## Equality operators
+
+Equal
+$$
+\mathrm{eq}(u\_1, u\_2)
+\coloneqq
+\begin{cases}
+1 &\text{ if } |u\_1 - u\_2| = 0 \\\\
+0 &\text{ otherwise }
+\end{cases}
+= \mathrm{step}(u\_2 - u\_1) \cdot \mathrm{step}(u\_1 - u\_2) \\
+$$
+
+Not equal
+$$
+\mathrm{neq}(u\_1, u\_2)
+\coloneqq
+\begin{cases}
+1 &\text{ if } |u\_1 - u\_2| > 0 \\\\
+0 &\text{ otherwise }
+\end{cases}
+= 1 - \mathrm{step}(u\_2 - u\_2) \cdot \mathrm{step}(u\_1 - u\_2)
+$$
+
+.center.width-50[![](./figures/differentiable_programs/equal.png)]
