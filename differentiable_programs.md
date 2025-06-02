@@ -3,12 +3,13 @@ class: middle, center, title-slide
 $$
 \gdef\e{\bm{e}}
 \gdef\p{\bm{p}}
+\gdef\s{\bm{s}}
 \gdef\u{\bm{u}}
 \gdef\v{\bm{v}}
-\gdef\x{\bm{x}}
-\gdef\s{\bm{s}}
 \gdef\w{\bm{w}}
+\gdef\x{\bm{x}}
 \gdef\piv{\bm{\pi}}
+\gdef\lambdav{\bm{\lambda}}
 \gdef\RR{\mathbb{R}}
 \gdef\EE{\mathbb{E}}
 \gdef\PP{\mathbb{P}}
@@ -629,4 +630,108 @@ Probabilistic interpretation
 $$
 f\_s(\p, \u\_1, \dots, \u\_K)
 = \EE\_{i \sim \mathrm{Categorical}(\mathrm{softargmax}(\p))}\left[g\_i(\u\_i)\right]
+$$
+
+---
+
+## For loops
+
+Sequentially calling a fixed number $K$ of functions, reusing the output from the previous iteration.
+
+.center.width-60[![](./figures/differentiable_programs/for_loop.png)]
+
+.center.width-70[![](./figures/differentiable_programs/for_loop_graph.png)]
+
+.center[Feedforward networks are essentially parameterized for loops!]
+
+<!--$$-->
+<!--f\_k(\s\_{k-1}) \coloneqq g\_k(\s\_{k-1}, \w\_k)-->
+<!--$$-->
+
+---
+
+## Gradient descent as a neural network
+
+Suppose we want to minimize $L(\w, \lambdav)$ w.r.t. $\w \in \cW$, where $\w \in \cW$ are model parameters and $\lambdav \in \Lambda$ are hyper-parameters
+
+<br>
+
+Gradient descent:
+$$
+\w\_k \coloneqq \w\_{k-1} - \gamma\_k \nabla\_1 L(\w\_{k-1}, \lambdav)
+$$
+
+<br>
+
+We can therefore see gradient descent as a **parameterized for loop** with
+
+$$
+f\_k(\w\_{k-1}) \coloneqq \w\_{k-1} - \gamma\_k \nabla\_1 L(\w\_{k-1}, \lambdav)
+$$
+
+---
+
+## Bubble sort as a neural network
+
+.center.width-60[![](./figures/differentiable_programs/bubble_sort.png)]
+
+$$
+\textcolor{black}{\mathrm{swap}(\v, i, j) 
+\coloneqq \v + (v\_j - v\_i) \e\_i + (v\_i - v\_j) \e\_j}
+$$
+
+<br>
+
+Can be smoothed out by replacing the step function with a sigmoid.
+
+---
+
+## Scan functions
+
+Higher-order function for performing an operation $f$ on individual elements $\u\_k$
+while carrying the result $\s\_k$ to the next iteration.
+
+.center.width-70[![](./figures/differentiable_programs/scan.png)]
+
+.center.width-70[![](./figures/differentiable_programs/scan_graph.png)]
+
+.center[Seq-to-seq RNNs are essentially parameterized scans!]
+
+---
+
+## While loops
+
+Performs an operation, reusing the output of the previous iteration,
+until a certain condition is met.
+
+.center.width-50[![](./figures/differentiable_programs/while_loop.png)]
+
+.center.width-50[![](./figures/differentiable_programs/while_loop_graph.png)]
+
+.center[A while loop forms a **cyclic** graph!]
+
+---
+
+## Unrolled while loop
+
+We can unroll a while loop for $T$ iterations to form an **acyclic** graph (here $T=3$)
+
+.center.width-50[![](./figures/differentiable_programs/unrolled_while_loop.png)]
+
+$$
+\textcolor{black}{\bm{r}
+= \pi\_0 \s\_0 + 
+(1-\pi\_0) \pi\_1 \s\_1 +
+(1-\pi\_0) (1- \pi\_1) \pi\_2 \s\_2 +
+(1-\pi\_0) (1- \pi\_1) (1 - \pi\_2) \s\_3}
+$$
+
+<br>
+
+$$
+\begin{aligned}
+  \textcolor{black}{\s\_i} & \textcolor{black}{\coloneqq g(\s\_{i-1})
+  \coloneqq \underbrace{g \circ \dots \circ g}\_{i \text{ times}}(\s\_0) \in \cS} \\\\
+  \textcolor{black}{\pi\_i} & \textcolor{black}{\coloneqq f(\s\_i) \in \\{0,1\\}}
+\end{aligned}
 $$
