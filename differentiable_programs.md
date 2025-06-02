@@ -113,7 +113,7 @@ on top of a learned representation $\s_{K-1}$.
 
 Nodes can have parent or children nodes.
 
-DAGs define a topological order.
+DAGs define a **topological order**.
 
 Examples: 
 * (0,1,2,3,4)
@@ -368,3 +368,93 @@ f\_{U\_1-U\_2}(0)
 \end{aligned}
 $$
 (the PDF of the sum of two random variables = **convolution** of the PDFs)
+
+---
+
+## Logical operators
+
+Operators defined on $\\{0,1\\}$
+
+<br>
+
+$$
+\mathrm{and}(\pi, \pi')
+\coloneqq
+\begin{cases}
+1 &\text{ if } \pi = \pi' = 1 \\\\
+0 &\text{ otherwise }
+\end{cases}
+$$
+
+<br>
+
+$$
+\mathrm{or}(\pi, \pi')
+\coloneqq
+\begin{cases}
+    1 &\text{ if } 1 \in \\{\pi, \pi'\\} \\\\
+0 &\text{ otherwise }
+\end{cases} \\
+$$
+
+<br>
+
+$$
+\mathrm{not}(\pi)
+\coloneqq
+\begin{cases}
+0 &\text{ if } \pi = 1 \\\\
+1 &\text{ if } \pi = 0
+\end{cases}
+$$
+
+---
+
+## Continuous extension
+
+We can define the operators on $[0,1]$ instead of $\\{0,1\\}$
+
+<br>
+
+$$
+\begin{aligned}
+\mathrm{and}(\pi, \pi') &= \pi \cdot \pi' \\\\
+\mathrm{or}(\pi, \pi') &= \pi + \pi' - \pi \cdot \pi' \\\\
+\mathrm{not}(\pi) &= 1 - \pi
+\end{aligned}
+$$
+
+<br>
+
+.center.width-70[![](./figures/differentiable_programs/soft_and_or.png)]
+
+---
+
+## Probabilistic interpretation
+
+Le $Y$ and $Y'$ be two independent random variables distributed according to
+**Bernoulli** distributions with parameter $\pi$ and $\pi'$.
+
+<br>
+
+$$
+\mathrm{and}(\pi, \pi') = \PP(Y = 1 \cap Y' = 1) 
+                        = \PP(Y = 1) \cdot \PP(Y' = 1)
+$$
+
+<br>
+
+$$
+\begin{aligned}
+\mathrm{or}(\pi, \pi') &= \PP(Y = 1 \cup Y' = 1) \\\\
+                       &= \PP(Y=1) + \PP(Y'=1) - \PP(Y = 1 \cap Y' = 1) \\\\
+                       &= \PP(Y=1) + \PP(Y'=1) - \PP(Y = 1) \PP(Y' = 1)
+\end{aligned}
+$$
+
+<br>
+
+$$
+\mathrm{not}(\pi) = \PP(Y \neq 1) = 1 - \PP(Y = 1)
+$$
+
