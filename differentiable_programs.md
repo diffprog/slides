@@ -1,13 +1,19 @@
 class: middle, center, title-slide
 
 $$
+\gdef\e{\bm{e}}
+\gdef\p{\bm{p}}
+\gdef\u{\bm{u}}
+\gdef\v{\bm{v}}
 \gdef\x{\bm{x}}
 \gdef\s{\bm{s}}
 \gdef\w{\bm{w}}
+\gdef\piv{\bm{\pi}}
 \gdef\RR{\mathbb{R}}
 \gdef\EE{\mathbb{E}}
 \gdef\PP{\mathbb{P}}
 \gdef\cS{\mathcal{S}}
+\gdef\cV{\mathcal{V}}
 \gdef\cW{\mathcal{W}}
 $$
 
@@ -160,6 +166,14 @@ Functions and output variables are represented by the same nodes.
 .center.width-70[![](./figures/differentiable_programs/graph2.png)]
 
 Functions and variables are represented by a disjoint set of nodes (bipartite graph).
+
+---
+
+## Operators
+
+* Inequality and equality operators
+* Soft relaxations
+* Logical operators
 
 ---
 
@@ -458,3 +472,161 @@ $$
 \mathrm{not}(\pi) = \PP(Y \neq 1) = 1 - \PP(Y = 1)
 $$
 
+---
+
+## Control flows
+
+* If-else statements ($2$ branches)
+* General conditional statements ($K$ branches)
+* For loops
+* Scan function
+* While loops
+
+---
+
+## If-else statements
+
+We can view an if-else as a function $\mathrm{ifelse} \colon \\{0,1\\} \times \cV \times \cV \to \cV$
+
+<br>
+
+$$
+\begin{aligned}
+\mathrm{ifelse}(\pi, \v\_1, \v\_0)
+&\coloneqq 
+\begin{cases}
+\v\_1 &\text{ if } \pi = 1 \\\\
+\v\_0 &\text{ if } \pi = 0 
+\end{cases} \\\\
+&= \pi \cdot \v\_1 + (1 - \pi) \cdot \v\_0
+\end{aligned}
+$$
+
+<br>
+
+* $\pi$ is called the predicate (**binary** variable)
+* $\v\_0$ and $\v\_1$ are the branches (real variables)
+
+---
+
+## Issues with if-else statements
+
+Suppose we want to use
+$$
+f\_h(p, \u\_1, \u\_0)
+\coloneqq
+\begin{cases}
+g\_1(\u\_1) &\text{ if } p \ge 0 \\\\
+g\_0(\u\_0) &\text{ otherwise }
+\end{cases}
+$$
+
+This can be written as
+$$
+\begin{aligned}
+f\_h(p, \u\_1, \u\_0) 
+&\coloneqq \mathrm{ifelse}(\mathrm{gt}(p, 0), g\_1(\u\_1), g\_0(\u\_0)) \\\\
+&= \mathrm{ifelse}(\mathrm{step}(p), g\_1(\u\_1), g\_0(\u\_0)) \\\\
+&= \mathrm{step}(p) g\_1(\u\_1) + (1 - \mathrm{step}(p)) g\_0(\u\_0)
+\end{aligned}
+$$
+
+.center.width-40[![](./figures/differentiable_programs/ifelse.png)]
+.center[Problem: there is a **discontinuity** w.r.t. the predicate $p$.]
+
+---
+
+## Continuous relaxation
+
+We can instead consider the relaxation $f\_s \approx f\_h$
+$$
+\begin{aligned}
+f\_s(p, \u\_1, \u\_0) 
+&\coloneqq \mathrm{ifelse}(\mathrm{gt}\_\sigma(p, 0), g\_1(\u\_1), g\_0(\u\_0)) \\\\
+&= \mathrm{ifelse}(\mathrm{sigmoid}\_\sigma(p), g\_1(\u\_1), g\_0(\u\_0)) \\\\
+&= \mathrm{sigmoid}\_\sigma(p) g\_1(\u\_1) + (1 - \mathrm{sigmoid}\_\sigma(p)) g\_0(\u\_0)
+\end{aligned}
+$$
+
+Probabilistic interpretation
+$$
+f\_s(p, \u\_1, \u\_0) 
+= \EE\_{i \sim \mathrm{Bernoulli}(\mathrm{sigmoid}\_\sigma(p))}\left[g\_i(\u\_i)\right]
+$$
+
+.center.width-40[![](./figures/differentiable_programs/soft_ifelse.png)]
+.center[Continuous and differentiable everywhere w.r.t. the predicate $p$!]
+
+---
+
+## Conditionals with K branches
+
+We can view general conditionals as a function
+$\mathrm{cond} \colon \\{\e\_1, \dots, \e\_K\\} \times \cV^K \to \cV$
+
+$$
+\begin{aligned}
+\mathrm{cond}(\piv, \v\_1, \dots, \v\_K)
+&\coloneqq 
+\begin{cases}
+\v\_1 &\text{ if } \piv = \e\_1 \\\\
+\vdots & \\\\
+\v\_K &\text{ if } \piv = \e\_K
+\end{cases} \\\\
+&= \sum_{i=1}^K \pi\_i \v\_i
+\end{aligned}
+$$
+where the selected branch is encoded using a one-hot vector
+$$
+\bm{e}_i \coloneqq (0, \ldots, 0, \underbrace{1}_i, 0, \ldots, 0).
+$$
+
+* $\piv$ is the predicate (**categorical** variable, encoded as a one hot vector)
+* $\v\_1, \dots, \v\_K$ are the branches (real variables)
+
+---
+
+## Issues with conditionals
+
+Suppose we want to use
+$$
+f\_a(\p, \u\_1, \dots, \u\_K) \coloneqq
+\begin{cases}
+\v\_1 &\text{ if } \mathrm{argmax}(\p) = \e\_1 \\\\
+\vdots & \\\\
+\v\_K &\text{ if } \mathrm{argmax}(\p) = \e\_K
+\end{cases}
+$$
+
+<br>
+
+This can be rewritten as
+$$
+f\_a(\p, \u\_1, \dots, \u\_K)
+\coloneqq
+\mathrm{cond}(\mathrm{argmax}(\p), g\_1(\u\_1), \dots, g\_K(\u\_K))
+$$
+
+<br>
+
+**Problem:** the function is discontinuous w.r.t. $\piv \in \\{\e\_1, \dots, \e\_K\\}$
+
+---
+
+## Continuous relaxation
+
+We can instead consider the relaxation $f\_s \approx f\_a$
+
+$$
+f\_s(\p, \u\_1, \dots, \u\_K)
+\coloneqq
+\mathrm{cond}(\mathrm{softargmax}(\p), g\_1(\u\_1), \dots, g\_K(\u\_K))
+$$
+
+<br>
+
+Probabilistic interpretation
+$$
+f\_s(\p, \u\_1, \dots, \u\_K)
+= \EE\_{i \sim \mathrm{Categorical}(\mathrm{softargmax}(\p))}\left[g\_i(\u\_i)\right]
+$$
