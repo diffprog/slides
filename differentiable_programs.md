@@ -5,6 +5,8 @@ $$
 \gdef\s{\bm{s}}
 \gdef\w{\bm{w}}
 \gdef\RR{\mathbb{R}}
+\gdef\EE{\mathbb{E}}
+\gdef\PP{\mathbb{P}}
 \gdef\cS{\mathcal{S}}
 \gdef\cW{\mathcal{W}}
 $$
@@ -202,7 +204,7 @@ $$
 = \mathrm{step}(u\_2 - u\_1)
 $$
 
-.center.width-50[![](./figures/differentiable_programs/greater_than.png)]
+.center.width-40[![](./figures/differentiable_programs/greater_than.png)]
 
 ---
 
@@ -230,4 +232,139 @@ $$
 = 1 - \mathrm{step}(u\_2 - u\_2) \cdot \mathrm{step}(u\_1 - u\_2)
 $$
 
-.center.width-50[![](./figures/differentiable_programs/equal.png)]
+.center.width-40[![](./figures/differentiable_programs/equal.png)]
+
+---
+
+## Sigmoid functions
+
+An "S"-shaped function for squashing $\RR$ to $[0,1]$
+
+Desired properties
+
+* $\mathrm{sigmoid}\_\sigma(-u) = 1 - \mathrm{sigmoid}\_\sigma(u)$
+* $\lim\_{u \to \infty} \mathrm{sigmoid}\_\sigma(u) = 1$
+* $\lim\_{u \to -\infty} \mathrm{sigmoid}\_\sigma(u) = 0$
+* $\mathrm{sigmoid}\_\sigma(0) = \frac{1}{2}$
+
+<br>
+
+.center.width-50[![](./figures/differentiable_programs/sigmoid.png)]
+
+
+---
+
+## Soft greater than
+
+We can use the **CDF** of a <em>standard</em> logistic or Gaussian distribution:
+
+* Logistic: $\mathrm{sigmoid}_\sigma(u) \coloneqq \frac{1}{1+ e^{-u/\sigma}}$
+
+* Gaussian: $\mathrm{sigmoid}_\sigma(u) \coloneqq \Phi(u/\sigma)
+= \frac{1}{2}\left[
+    1 + \mathrm{erf}\left(\frac{z}{\sqrt{2}}\right)
+\right]$
+
+<br>
+
+.center.width-50[![](./figures/differentiable_programs/sigmoid.png)]
+
+---
+
+## Hard versus soft greater than
+
+$\mathrm{gt}(u\_1, u\_2) = \mathrm{step}(u\_1 - u\_2)$
+.center.width-40[![](./figures/differentiable_programs/greater_than.png)]
+
+$\mathrm{gt}\_\sigma(u\_1, u\_2) \coloneqq \mathrm{sigmoid}\_\sigma(u\_1 - u\_2)$
+.center.width-40[![](./figures/differentiable_programs/soft_greater_than.png)]
+
+---
+
+## Stochastic perspective (1/2)
+
+Suppose 
+$U\_1 \sim p\_{\mu\_1,\sigma\_1}$
+and
+$U\_2 \sim p\_{\mu\_2,\sigma\_2}$
+
+$$
+\begin{aligned}
+\mathrm{gt}\_\sigma(\mu\_1, \mu\_2) 
+&= \EE\left\[\mathrm{gt}(U\_1, U\_2)\right\] \\\\
+&= \EE\left\[\mathrm{step}(U\_1 - U\_2)\right\] \\\\
+&= \PP(U\_1 - U\_2 \ge 0) \\\\
+&= \PP(U\_2 - U\_1 \le 0) \\\\
+&= F_{U\_2 - U\_1}(0)
+\end{aligned}
+$$
+
+.center.width-50[![](./figures/differentiable_programs/ineq_op_stochastic_perspective.png)]
+
+---
+
+## Stochastic perspective (2/2)
+
+<br>
+
+If $U\_1 \sim \mathrm{Normal}(\mu\_1, \sigma\_1^2)$
+and
+$U\_2 \sim \mathrm{Normal}(\mu\_2, \sigma\_2^2)$,
+$$
+U\_1 - U\_2 \sim \mathrm{Normal}(\mu\_1 - \mu\_2, \sigma\_1^2 + \sigma\_2^2)
+$$
+$\Rightarrow \mathrm{gt}\_\sigma(\mu\_1, \mu\_2) 
+= \Phi\left(\frac{\mu\_1-\mu\_2}{\sigma}\right)$
+<br><br>
+
+--- 
+
+If 
+$U\_1 \sim \mathrm{Gumbel}(\mu\_1, \sigma)$
+and
+$U\_2 \sim \mathrm{Gumbel}(\mu\_2, \sigma)$,
+$$
+U\_1 - U\_2 \sim \mathrm{Logistic}(\mu\_1 - \mu\_2, \sigma)
+$$
+$\Rightarrow \mathrm{gt}\_\sigma(\mu\_1, \mu\_2) 
+= \mathrm{logistic}\left(\frac{\mu\_1-\mu\_2}{\sigma}\right)$
+
+---
+
+## Soft equality operators
+
+We can use a normalized kernel
+$\kappa\_\sigma$ (logistic, Gaussian) centered on zero.
+ 
+$$
+\mathrm{eq}\_\sigma(\mu\_1,\mu\_2) 
+\coloneqq
+\frac{\kappa\_\sigma(\mu\_1 - \mu\_2)}{\kappa\_\sigma(0)}
+$$
+
+<br>
+
+.center.width-50[![](./figures/differentiable_programs/kernel.png)]
+
+---
+
+## Stochastic perspective
+
+The kernel corresponds to using the distribution **PDF**
+
+$$
+\mathrm{eq}\_\sigma(\mu\_1,\mu\_2) 
+= \frac{f\_{U\_1 - U\_2}(0)}{f\_{0}(0)}
+$$
+where
+$$
+\begin{aligned}
+f\_{U\_1-U\_2}(0)
+&= (f\_{U\_1} \ast f\_{-U\_2})(0) \\\\
+&= \int\_{-\infty}^\infty f\_{U\_1}(\tau) f\_{-U\_2}(-\tau) d\tau \\\\
+&= \int\_{-\infty}^\infty f\_{U\_1}(\tau) f\_{U\_2}(\tau) d\tau \\\\
+&\coloneqq \langle f\_{U\_1}, f\_{U\_2} \rangle \\\\
+&\coloneqq \kappa(\mu\_1,\mu\_2)
+\end{aligned}
+$$
+(the PDF of the sum of two random variables = **convolution** of the PDFs)
