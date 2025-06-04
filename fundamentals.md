@@ -48,7 +48,7 @@ in its domain.
 
 <br>
 
-.center.width-80[![](./figures/fundamentals/continuity.png)]
+.center.width-100[![](./figures/fundamentals/continuity.png)]
 
 ---
 
@@ -71,9 +71,13 @@ $w$, we say that the function $f$ is differentiable at $w$.
 ## Calculus rules
 
 - Linearity: $\forall a, b \in \mathbb{R}, \ (af+bg)'(w) = af'(w) +bg'(w)$ 
+
 - Product rule: $(fg)'(w) = f'(w) g(w) + f(w)g'(w)$
+
 - Chain rule: $(f\circ g)'(w) = f'(g(w)) g'(w)$, where
 $(f\circ g)(w) \coloneqq f(g(w))$
+
+<br>
 
 As the linearity and the product rules can be rederived from 
 the chain rule, the chain rule can be seen as the cornerstone of differentiation.
@@ -328,14 +332,11 @@ as a linear map $\cE \to \cF$
 
 --
 
-Therefore
-$$
-\partial f \colon \cE \to (\cE \to \cF)
-$$
-
-<br>
+Therefore $\partial f \colon \cE \to (\cE \to \cF)$
 
 --
+
+<br>
 
 We rarely need to materialize the Jacobian $\jac f(\w)$ as a matrix.
 
@@ -437,10 +438,17 @@ as a linear map $\cF \to \cE$
 
 --
 
-Therefore
-$$
-\partial f(\cdot)^\* \colon \cE \to (\cF \to \cE)
-$$
+Therefore $\partial f(\cdot)^\* \colon \cE \to (\cF \to \cE)$
+
+---
+
+class: middle
+
+.center[Jacobian-vector product (JVP) $\v \mapsto \partial f(\w)[\v]$]
+
+.center.width-60[![](./figures/fundamentals/jvp_vjp_recap.png)]
+
+.center[vector-Jacobian product (VJP) $\textcolor{chocolate}{\u \mapsto \partial f(\w)^*[\u]}$]
 
 ---
 
@@ -451,19 +459,21 @@ $\cF$ and $\cG$ are Euclidean spaces.
 
 <br>
 
-The JVP of $g \circ f$ is given for all $\v \in \cE$ by
-$$
+.center[
+$
 \partial (g\circ f)(\w)[\v] 
 = \partial g(f(\w))[\partial f(\w)[\v]]
-$$
+~ \forall \v \in \cE
+$]
 
-<br>
+.center.width-80[![](./figures/fundamentals/chain_rule_recap.png)]
 
-The VJP of $g \circ f$ is given for all $\u \in \cG$ by
-$$
-\partial (g\circ f)(\w)^\*[\u] 
+.center[
+$
+\textcolor{chocolate}{\partial (g\circ f)(\w)^\*[\u] 
 = \partial f(\w)^\*[\partial g(f(\w))^\*[\u]]
-$$
+~ \forall \u \in \cG}
+$]
 
 <br>
 
