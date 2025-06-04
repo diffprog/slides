@@ -134,16 +134,16 @@ fpp = grad(grad(tanh))
 
 ---
 
-## Some misconceptions
-
-- Differentiable programming is just deep learning.
+- Differentiable programming is not just deep learning.
   * Deep networks learn **intermediate features** and include **inductive biases**
 (e.g., convolutional networks for image, Transformers for sequences).
   * Differentiable programming is useful beyond deep learning: reinforcement learning, probabilistic programming and scientific computing in general.
 
+<br>
+
 --
 
-- Differentiable programming is just autodiff.
+- Differentiable programming is not just autodiff.
   * How to design of principled differentiable operations?
   * How to make classical computer programming operations compatible with autodiff?
 
