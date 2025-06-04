@@ -148,10 +148,13 @@ Modern frameworks support higher-order derivatives.
 
 class: middle
 
-## Book
+## Book (<a href="https://arxiv.org/abs/2403.14606">arXiv</a>, <a href="https://github.com/diffprog/code">code</a>)
 
 .center.width-60[![](./figures/intro/book.png)]
 
 <br>
 
 .center[We will follow the book organization and notation.]
+
+<br>
+
