@@ -38,6 +38,11 @@ Mathieu Blondel, Vincent Roulet
 - Control flows
   * Step functions
   * Comparison operators
+  * If-else statements
+  * General conditional statements
+  * For loops
+  * Scan function
+  * While loops
 
 ---
 
@@ -67,7 +72,7 @@ $$
 
 ---
 
-## Feedforward networks = parameterized computain chains
+## Feedforward networks = parameterized computation chains
 
 .center.width-100[![](./figures/differentiable_programs/feedforward.png)]
 
@@ -111,6 +116,119 @@ where
 We can see an MLP as a generalized linear model (GLM) <br>
 $\s\_{K-1} \mapsto a\_K(\bm{W}\_K \s\_{K-1} + \bm{b}\_K)$
 on top of a learned representation $\s_{K-1}$.
+
+---
+
+## ReLU and softplus
+
+Many activations are **scalar-to-scalar** functions, applied element-wise.
+
+The ReLU is defined as the non-negative part
+$$
+\mathrm{relu}(u) 
+\coloneqq \max(u, 0) 
+= \begin{cases} 
+u, & u \ge 0 \\\\
+0, & u < 0
+\end{cases}
+$$
+
+The softplus is a smoothed relaxation of the ReLU
+$$
+\mathrm{softplus}(u) \coloneqq \log(1 + e^u)
+$$
+
+<br>
+
+.center.width-50[![](./figures/differentiable_programs/relu.png)]
+
+---
+
+## Max pooling and log-sum-exp
+
+Many activations are **vector-to-scalar** functions: they reduce vectors to a scalar.
+
+Max pooling
+$$
+\max(\u) \coloneqq \max\_{j \in [M]} u\_j
+\in \RR
+$$
+
+Log-sum-exp can be seen as a soft max
+$$
+\mathrm{logsumexp}(\u) \coloneqq 
+\mathrm{softmax}(\u) \coloneqq 
+\log \sum\_{j=1}^M e^{u\_j}
+\in \RR
+$$
+
+<br>
+
+.center.width-50[![](./figures/differentiable_programs/max_heatmap.png)]
+
+---
+
+## Sigmoids: binary step and logistic functions
+
+"S"-shaped functions for squashing $\RR$ to $[0,1]$
+
+Binary step function a.k.a.  Heaviside step function
+$$
+\mathrm{step}(u) \coloneqq
+\begin{cases} 
+1, & u \ge 0 \\\\
+0, & u < 0
+\end{cases}
+\in \\{0,1\\}
+$$
+
+
+Logistic function
+$$
+\mathrm{logistic}(u) 
+\coloneqq \frac{1}{1 + e^{-u}}
+= \frac{e^u}{1 + e^u} \in (0,1)
+$$  
+
+.center.width-50[![](./figures/differentiable_programs/step_function.png)]
+
+---
+
+## Probability mappings: argmax and softargmax
+
+Argmax layer, denoting $\phi(j) \coloneqq \e\_j$
+$$
+\mathrm{argmax}(\u) \coloneqq \phi\left(\argmax\_{j \in [M]} u\_j\right) 
+\in \\{\e\_1, \dots, \e\_M\\}
+$$
+
+
+Softargmax layer
+$$
+\mathrm{softargmax}(\u) \coloneqq \frac{\exp(\u)}{\sum\_{j=1}^M \exp(u\_j)}
+\in \mathrm{relint}(\triangle^M)
+$$
+
+.grid[
+.kol-1-2.left.width-90[
+![](figures/differentiable_programs/3dplot_argmax.png)
+]
+.kol-1-2.center.width-90[
+![](figures/differentiable_programs/3dplot_softargmax.png)
+]
+]
+
+---
+
+class: middle
+
+.center.width-90[![](./figures/differentiable_programs/argmax_heatmap.png)]
+
+---
+
+class: middle
+
+.center.width-70[![](./figures/differentiable_programs/simplex.png)]
 
 ---
 
@@ -175,23 +293,6 @@ Functions and variables are represented by a disjoint set of nodes (bipartite gr
 * Inequality and equality operators
 * Soft relaxations
 * Logical operators
-
----
-
-## Heaviside step function
-
-$$
-\mathrm{step}(u)
-\coloneqq \begin{cases}
-    1 &\text{ if } ~ u \ge 0 \\\\
-    0 &\text{ otherwise } 
-\end{cases}
-$$
-It is a function from $\RR$ to $\\{0,1\\}$.
-
-<br>
-
-.center.width-70[![](./figures/differentiable_programs/step_function.png)]
 
 ---
 
