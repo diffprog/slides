@@ -13,9 +13,9 @@ $$
 \gdef\cG{\mathcal{G}}
 $$
 
-# Differentiable programming
+# The Elements of <br> Differentiable Programming
 
-Lecture 1: Fundamentals
+**Lecture 1: Fundamentals**
 
 <br><br>
 Mathieu Blondel, Vincent Roulet
@@ -88,6 +88,8 @@ Suppose $u \coloneqq f(w)$
 - Leibniz notation: $f' = \frac{du}{dw}$
 
 --
+
+<br>
 
 Now suppose $v \coloneqq g(w)$ and $u \coloneqq f(v)$
 
@@ -271,10 +273,11 @@ $$
 
 *Example:* $f$ a layer, $g$ another layer
 
-<br><br>
-
 --
 
+--- 
+
+<br>
 
 Consider $f:\RR^P \rightarrow\RR^M$ and $L:\RR^M \rightarrow \RR$. Then,
 $$
@@ -459,7 +462,7 @@ $$
 The VJP of $g \circ f$ is given for all $\u \in \cG$ by
 $$
 \partial (g\circ f)(\w)^\*[\u] 
-= \partial f(\w)^\*[\partial g(f(\w))^\*[\u]].
+= \partial f(\w)^\*[\partial g(f(\w))^\*[\u]]
 $$
 
 <br>

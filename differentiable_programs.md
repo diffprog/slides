@@ -18,9 +18,9 @@ $$
 \gdef\cW{\mathcal{W}}
 $$
 
-# Differentiable programming
+# The Elements of <br> Differentiable Programming
 
-Lecture 2: Differentiable programs
+**Lecture 2: Differentiable programs**
 
 <br><br>
 Mathieu Blondel, Vincent Roulet
@@ -751,7 +751,7 @@ Sequentially calling a fixed number $K$ of functions, reusing the output from th
 
 ---
 
-## Gradient descent as a neural network
+## Example 1: Gradient descent as a neural network
 
 Suppose we want to minimize $L(\w, \lambdav)$ w.r.t. $\w \in \cW$, where $\w \in \cW$ are model parameters and $\lambdav \in \Lambda$ are hyper-parameters
 
@@ -772,7 +772,7 @@ $$
 
 ---
 
-## Bubble sort as a neural network
+## Example 2: Bubble sort as a neural network
 
 .center.width-60[![](./figures/differentiable_programs/bubble_sort.png)]
 

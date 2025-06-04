@@ -1,8 +1,8 @@
 class: middle, center, title-slide
 
-# Differentiable programming
+# The Elements of <br> Differentiable Programming
 
-Lecture 0: Introduction
+**Lecture 0: Introduction**
 
 <br><br>
 Mathieu Blondel, Vincent Roulet
@@ -18,7 +18,6 @@ Mathieu Blondel, Vincent Roulet
 - Lecture 2: Differentiable programs
   * Parameterized programs
   * Control flows
-  * Data structures
 - Lecture 3: Differentiating through programs
   * Finite differences
   * Automatic differentiation
@@ -30,7 +29,7 @@ Mathieu Blondel, Vincent Roulet
 
 ---
 
-# The pillars of modern AI
+## The pillars of modern AI
 
 Artificial intelligence has recently experienced remarkable advances thanks to:
 
@@ -48,7 +47,7 @@ Artificial intelligence has recently experienced remarkable advances thanks to:
 
 class: middle
 
-# Definition
+## Definition
 
 .italic[
 Differentiable programming is a programming paradigm in which complex computer
@@ -59,7 +58,7 @@ parameters in the program.
 
 ---
 
-# Neural nets as parameterized programs
+## Neural nets as parameterized programs
 
 - A program is defined as the composition of elementary operations.
 - It forms a computation graph.
@@ -69,7 +68,7 @@ parameters in the program.
 
 ---
 
-# Why do we need derivatives?
+## Why do we need derivatives?
 
 - Derivative-free optimization is called **zero-order** optimization.
 
@@ -83,7 +82,7 @@ millions or billions of parameters.
 
 ---
 
-# The autodiff revolution
+## The autodiff revolution
 
 ```python
 import jax.numpy as jnp
@@ -102,11 +101,11 @@ def loss_fn(params, inputs, targets):
 grad_fun = jit(grad(loss_fn))
 ```
 
-The user can focus on expressing the forward computation (model), enabling fast experimentation.
+The user can focus on expressing the forward computation (model), enabling fast experimentation and alleviating the need for error-prone manual gradient derivation.
 
 ---
 
-# The autodiff revolution
+## The autodiff revolution
 
 .grid[
 .kol-1-2.left.width-100[
@@ -132,12 +131,14 @@ Modern frameworks support higher-order derivatives.
 
 ---
 
-# Some misconceptions
+## Some misconceptions
 
 - Differentiable programming is just deep learning.
   * Deep networks learn **intermediate features** and include **inductive biases**
 (e.g., convolutional networks for image, Transformers for sequences).
   * Differentiable programming is useful beyond deep learning: reinforcement learning, probabilistic programming and scientific computing in general.
+
+--
 
 - Differentiable programming is just autodiff.
   * How to design of principled differentiable operations?
@@ -145,8 +146,12 @@ Modern frameworks support higher-order derivatives.
 
 ---
 
-# Book
+class: middle
 
-![](./figures/intro/book.png)
+## Book
 
-We will follow the book organization and notation.
+.center.width-60[![](./figures/intro/book.png)]
+
+<br>
+
+.center[We will follow the book organization and notation.]
