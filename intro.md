@@ -65,6 +65,7 @@ parameters in the program.
 - It should define a mathematically valid function (a.k.a. pure function).
 - It should have well-defined derivatives.
 
+.center.width-100[![](./figures/intro/param_program.png)]
 
 ---
 
@@ -79,6 +80,8 @@ it only scales to small dimensional problems, such as less than 10 dimensions.
 millions or billions of parameters.
 
 - Algorithms that use first and second derivatives are known as **first-order** and **second-order algorithms**, respectively
+
+.center.width-70[![](./figures/intro/gradient_descent.png)]
 
 ---
 
@@ -127,7 +130,7 @@ fpp = grad(grad(tanh))
 ]
 ]
 
-Modern frameworks support higher-order derivatives.
+.center[Modern frameworks support higher-order derivatives.]
 
 ---
 
