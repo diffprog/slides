@@ -661,6 +661,45 @@ $$
 
 ---
 
+## Global versus local smoothing
+
+$$
+f(x, y, z) \coloneqq
+\begin{cases}
+  y & \text{if} \ a \leq x \leq b \\\\
+  z & \text{otherwise}
+\end{cases}
+=
+\mathrm{ifelse}(\mathrm{and}(\mathrm{gt}(x, a), \mathrm{lt}(x, b)), y, z)
+$$
+
+$\pi\_a \coloneqq \mathrm{sigmoid}\_\sigma(x-a)$,
+$\pi\_b \coloneqq \mathrm{sigmoid}\_\sigma(b-x)$
+
+**Local smoothing approach**
+$$
+\begin{aligned}
+f^{\mathrm{loc}}\_\sigma(x, y, z) 
+&\coloneqq
+\mathrm{ifelse}(\mathrm{and}(\mathrm{gt}\_\sigma(x, a), 
+\mathrm{lt}\_\sigma(x, b)), y, z) \\\\
+&= \pi\_a \pi\_b y + (1-\pi\_a\pi\_b)z 
+\end{aligned}
+$$
+**Global smoothing approach**
+$$
+\begin{aligned}
+f^{\mathrm{glob}}\_\sigma(x, y, z) 
+&\coloneqq \EE\_Z[\mathrm{ifelse}(\mathrm{and}(\mathrm{gt}(x+\sigma Z, a), 
+\mathrm{lt}(x + \sigma Z, b)), y, z)] \\\\
+&= \mathrm{ifelse}(\pi\_b - \pi\_a, y, z)
+\end{aligned}
+$$
+
+.center.width-60[![](./figures/differentiable_programs/global_vs_local.png)]
+
+---
+
 ## Conditionals with K branches
 
 We can view general conditionals as a function
