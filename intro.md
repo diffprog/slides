@@ -98,8 +98,8 @@ def predict(params, inputs):
   return outputs
 
 def loss_fn(params, inputs, targets):
-  preds = predict(params, inputs)
-  return jnp.sum((preds - targets)**2)
+  outputs = predict(params, inputs)
+  return jnp.sum((outputs - targets) ** 2)
 
 grad_fun = jit(grad(loss_fn))
 ```
