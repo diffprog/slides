@@ -33,6 +33,7 @@ Mathieu Blondel, Vincent Roulet
   * Computation chains
   * Feedforward networks
   * Multilayer perceptrons
+  * Activation functions
   * Directed acyclic graphs (DAGs)
   * Computation graphs
 - Control flows
