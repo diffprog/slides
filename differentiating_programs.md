@@ -13,6 +13,7 @@ $$
 \gdef\x{\bm{x}}
 \gdef\piv{\bm{\pi}}
 \gdef\lambdav{\bm{\lambda}}
+\gdef\deltav{\bm{\delta}}
 \gdef\RR{\mathbb{R}}
 \gdef\EE{\mathbb{E}}
 \gdef\PP{\mathbb{P}}
@@ -397,3 +398,64 @@ $$
 <br>
 
 .center.width-90[![](./figures/differentiating_programs/complexity_jacobian.png)]
+
+---
+
+## Forward-mode autodiff for computation graphs
+
+**Computation chain** 
+
+$f\_k$ takes a **single** input $\s\_{k-1}$ <br>
+$\partial f\_k(\s\_k)$ takes a **single** input direction $\t\_{k-1}$
+
+$$
+\begin{aligned}
+\s\_k &\coloneqq f\_k(\s\_{k-1}) \\\\
+\t\_k &\coloneqq \partial f\_k(\s\_{k-1})[\t\_{k-1}]
+\end{aligned}
+$$
+
+**Computation graph** 
+
+$f\_k$ takes **multiple** inputs $\s\_{i\_1}, \dots, \s\_{i\_{p\_k}}$ <br>
+$\partial f\_k(\s\_{i\_1}, \dots, \s\_{i\_{p\_k}})$ takes **multiple** input directions $\t\_{i\_1}, \dots, \t\_{i\_{p\_k}}$ <br>
+where $i\_1, \dots, i\_{p\_k} = \mathrm{pa}(k)$ are the parent nodes
+
+$$
+\begin{aligned}
+\s\_k &\coloneqq f\_k(\s\_{i\_1}, \dots, \s\_{i\_{p\_k}}) \\\\
+\t\_k &\coloneqq \partial f\_k(\s\_{i\_1}, \dots, \s\_{i\_{p\_k}})[\t\_{i\_1}, \dots, \t\_{i\_{p\_k}}] \\\\
+&= \sum\_{j \in \mathrm{pa}(k)}
+\partial\_j f\_k(\s\_{i\_1}, \dots, \s\_{i\_{p\_k}})[\t\_j]
+\end{aligned}
+$$
+
+---
+
+## Reverse-mode autodiff for computation graphs
+
+**Computation chain** 
+
+$\partial f\_k(\s\_{k-1})^\*$ produces a **single** output direction $\r\_k$
+$$
+\r\_{k-1} \coloneqq \partial f\_k(\s\_{k-1})^\*[\r\_k]
+$$
+
+**Computation graphs**
+
+$\partial f\_k(\s\_{i\_1}, \dots, \s\_{i\_{p\_k}})^\*$ produces **multiple** output variations
+$$
+\deltav\_{i\_1,k}, \dots, \deltav\_{i\_{p\_k},k} 
+= \partial f\_k(\s\_{i\_1}, \ldots, \s\_{i\_{p\_k}})^\*[\r\_k]
+$$
+where
+$$
+\deltav\_{j,k} \coloneqq \partial\_j f\_k(\s\_{i\_1}, \ldots, \s\_{i\_{p\_k}})^\*[\r\_k]
+$$
+We then need to sum the variations
+$$
+\r\_k
+\coloneqq \sum\_{j \in \mathrm{ch}(k)} \partial\_j f\_k(\s\_{i\_1}, \ldots,
+\s\_{i\_{p\_k}})^\*[\r\_k]
+= \sum\_{j \in \mathrm{ch}(k)} \deltav_{j,k}
+$$

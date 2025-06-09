@@ -29,7 +29,7 @@ Mathieu Blondel, Vincent Roulet
 
 # Outline
 
-- Pararameterized programs
+- **Pararameterized programs**
   * Computation chains
   * Feedforward networks
   * Multilayer perceptrons
@@ -37,13 +37,6 @@ Mathieu Blondel, Vincent Roulet
   * Directed acyclic graphs (DAGs)
   * Computation graphs
 - Control flows
-  * Step functions
-  * Comparison operators
-  * If-else statements
-  * General conditional statements
-  * For loops
-  * Scan function
-  * While loops
 
 ---
 
@@ -163,9 +156,13 @@ $$
 \in \RR
 $$
 
-<br>
+.center.width-90[![](./figures/differentiable_programs/max_softmax_3d.png)]
 
-.center.width-50[![](./figures/differentiable_programs/max_heatmap.png)]
+---
+
+class: middle
+
+.center.width-100[![](./figures/differentiable_programs/max_heatmap.png)]
 
 ---
 
@@ -277,7 +274,8 @@ The function $f$ is decomposed as $8$ elementary functions in topological order.
 
 .center.width-70[![](./figures/differentiable_programs/graph1.png)]
 
-Functions and output variables are represented by the same nodes.
+Functions and output variables are represented by the same nodes. <br>
+Multiple inputs / outputs can be handled using tuples.
 
 <br>
 
@@ -289,11 +287,18 @@ Functions and variables are represented by a disjoint set of nodes (bipartite gr
 
 ---
 
-## Operators
+# Outline
 
-* Inequality and equality operators
-* Soft relaxations
-* Logical operators
+- Pararameterized programs
+- **Control flows**
+  * Inequality operators
+  * Equality operators
+  * Logical operators
+  * If-else statements
+  * General conditional statements
+  * For loops
+  * Scan function
+  * While loops
 
 ---
 
