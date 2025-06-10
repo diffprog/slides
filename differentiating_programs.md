@@ -13,6 +13,7 @@ $$
 \gdef\x{\bm{x}}
 \gdef\piv{\bm{\pi}}
 \gdef\lambdav{\bm{\lambda}}
+\gdef\muv{\bm{\mu}}
 \gdef\deltav{\bm{\delta}}
 \gdef\RR{\mathbb{R}}
 \gdef\EE{\mathbb{E}}
@@ -497,3 +498,31 @@ momentum nets,
 <br>
 
 .center.width-90[![](./figures/differentiating_programs/reverse_mode_reversible_layer.png)]
+
+---
+
+## Randomized forward-mode estimator
+
+For a function $f \colon \RR^P \to \RR$, forward mode requires $P$ JVPs to compute $\nabla f$.
+
+Can we approximate $\nabla f$ with fewer than $P$ JVPs?
+
+<br>
+
+$$
+\nabla f(\muv)
+= \EE\_{Z \sim p} \left[\partial f(\muv)[Z] Z \right]
+= \EE\_{Z \sim p} \left[\langle \nabla f(\muv), Z \rangle Z \right]
+$$
+
+<br>
+
+where $p \coloneqq \mathrm{Normal}(0,1)^P$ is the isotropic Gaussian distribution.
+
+<br>
+
+In practice, we approximate the expectation using Monte-Carlo estimation.
+
+<br>
+
+**Unbiased but high variance estimator:** this slows down the convergence of SGD.
