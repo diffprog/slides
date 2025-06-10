@@ -11,16 +11,21 @@ $$
 \gdef\v{\bm{v}}
 \gdef\w{\bm{w}}
 \gdef\x{\bm{x}}
+\gdef\y{\bm{y}}
 \gdef\piv{\bm{\pi}}
 \gdef\lambdav{\bm{\lambda}}
+\gdef\thetav{{\bm{\theta}}}
 \gdef\muv{\bm{\mu}}
 \gdef\deltav{\bm{\delta}}
 \gdef\RR{\mathbb{R}}
 \gdef\EE{\mathbb{E}}
 \gdef\PP{\mathbb{P}}
 \gdef\cS{\mathcal{S}}
+\gdef\cU{\mathcal{U}}
 \gdef\cV{\mathcal{V}}
 \gdef\cW{\mathcal{W}}
+\gdef\cY{\mathcal{Y}}
+\gdef\cZ{\mathcal{Z}}
 $$
 
 # The Elements of <br> Differentiable Programming
@@ -32,6 +37,8 @@ Mathieu Blondel, Vincent Roulet
 
 ---
 
+name: finiteDiff
+
 # Outline
 
 - **Finite differences**
@@ -40,9 +47,9 @@ Mathieu Blondel, Vincent Roulet
   * Central differences
   * Complex-step derivatives
   * Complexity
-- Automatic differentiation
-- Differentiating through optimization
-- Differentiating through integration
+- <a href="#autodiff">Automatic differentiation</a>
+- <a href="#diffThroughOptim">Differentiating through optimization</a>
+- <a href="#diffThroughIntegration">Differentiating through integration</a>
 
 ---
 
@@ -184,17 +191,19 @@ How many **function calls** are needed to compute the gradient?
 
 ---
 
+name: autodiff
+
 # Outline
 
-- Finite differences
+- <a href="#finiteDiff">Finite differences</a>
 - **Automatic differentiation**
   * Computation chains (forward and reverse modes)
   * Computation graphs (forward and reverse modes)
   * Checkpointing
   * Reversible layers
   * Randomized forward-mode estimator
-- Differentiating through optimization
-- Differentiating through integration
+- <a href="#diffThroughOptim">Differentiating through optimization</a>
+- <a href="#diffThroughIntegration">Differentiating through integration</a>
 
 ---
 
@@ -526,3 +535,296 @@ In practice, we approximate the expectation using Monte-Carlo estimation.
 <br>
 
 **Unbiased but high variance estimator:** this slows down the convergence of SGD.
+
+---
+
+name: diffThroughOptim
+
+# Outline
+
+- <a href="#finiteDiff">Finite differences</a>
+- <a href="#autodiff">Automatic differentiation</a>
+- **Differentiating through optimization**
+  * Implicit functions
+  * Envelope theorems
+  * Implicit function theorem
+- <a href="#diffThroughIntegration">Differentiating through integration</a>
+
+---
+
+name: diffThroughIntegration
+
+# Outline
+
+- <a href="#finiteDiff">Finite differences</a>
+- <a href="#autodiff">Automatic differentiation</a>
+- <a href="#diffThroughOptim">Differentiating through optimization</a>
+- **Differentiating through integration**
+  * Differentiation under the integral sign
+  * Differentiating through expectations
+  * Score function estimator (REINFORCE)
+  * Path gradient estimators
+  * Pushforward distributions
+  * Change of variable theorem
+
+---
+
+## Differentiation under the integral sign
+
+Consider a function
+$$
+F(\thetav) \coloneqq \int\_\cY f(\thetav, \y)d\y
+$$
+
+<br>
+
+Provided that we can swap integration and differentiation
+$$
+\nabla F(\thetav) = \int\_\cY \nabla\_\thetav f(\thetav, \y)d\y
+$$
+
+<br>
+
+The conditions under which we can do this are quite technical.
+The most import requirement is that $\thetav \mapsto f(\thetav, \y)$ is absolutely continuous for all $\y \in \cY$.
+
+---
+
+## <span style="font-size: 0.95em">Differentiating expectations: parameter-independent distributions</span>
+
+The parameters $\thetav$ we want to differentiate are **not involved** in the distribution.
+$$
+F(\thetav) 
+\coloneqq \EE\_{Y \sim p}[g(Y, \thetav)]
+= \int\_{\cY} g(\y, \thetav) p(\y) d\y
+$$
+
+<br>
+Example: smoothing a differentiable almost everywhere function by perturbation
+$$
+F(\thetav; \x) \coloneqq \EE\_{Z \sim p}[g(\x + Z, \thetav)]
+$$
+
+<br>
+
+The gradient **is** in expectation form
+$$
+\begin{aligned}
+\nabla F(\thetav)
+&= \nabla\_\thetav \int\_{\cY} g(\y, \thetav) p(\y) d\y \\\\
+&= \int\_{\cY} \nabla\_\thetav g(\y, \thetav) p(\y) d\y \\\\
+&= \EE\_{Y \sim p}[\nabla\_\thetav g(Y, \thetav)]
+\end{aligned}
+$$
+
+---
+
+## Differentiating expectations: parameter-dependent distributions
+
+The parameters $\thetav$ we want to differentiate are **involved** in the distribution.
+$$
+E(\thetav) \coloneqq \EE\_{Y \sim p\_\thetav}[g(Y)]
+= \int\_{\cY} g(\y) p\_\thetav(\y) d\y
+$$
+
+<br>
+Example: reinforcement learning (RL)
+$$
+E(\thetav; \x) \coloneqq \EE\_{Y \sim p\_\thetav}[\mathrm{reward}(\x, Y)]
+$$
+
+<br>
+
+The gradient **is not** in expectation form
+$$
+\nabla E(\thetav) 
+= \nabla\_\thetav \int\_{\cY} p\_\thetav(\y) g(\y) d\y
+= \int\_{\cY} \nabla\_\thetav p\_\thetav(\y) g(\y) d\y
+$$
+
+---
+
+## Score function estimator
+
+Using the logarithmic derivative identity
+$$
+\nabla\_\thetav \log p\_\thetav(\y) 
+= \frac{\nabla\_\thetav p\_\thetav(\y)}{p\_\thetav(\y)}
+\Longleftrightarrow
+\nabla\_\thetav p\_\thetav(\y)
+= 
+p\_\thetav(\y)
+\nabla\_\thetav \log p\_\thetav(\y)
+$$
+
+<br>
+
+we can rewrite the gradient of
+$$
+E(\thetav) 
+\coloneqq \EE\_{Y \sim p\_\thetav}[g(Y)]
+= \int\_\cY p\_\thetav(\y) g(\y) d\y
+$$
+as
+$$
+\nabla E(\thetav)
+= \EE\_{Y \sim \p\_\thetav}[g(Y) \nabla\_\thetav \log p\_\thetav(Y)]
+$$
+
+---
+
+## Pathwise gradient estimator: an example
+
+Suppose we want to differentiate
+$$
+E(\mu, \sigma)
+\coloneqq \EE\_{U \sim \mathrm{Normal}(\mu, \sigma^2)}[g(U)]
+$$
+Using
+$$
+U \sim \mathrm{Normal}(\mu, \sigma^2)
+\iff
+\mu + \sigma Z \qquad Z \sim \mathrm{Normal}(0, 1)
+$$
+we obtain
+$$
+E(\mu, \sigma) 
+= \EE\_{Z \sim \mathrm{Normal}(0, 1)}[g(\mu + \sigma Z)]
+$$
+and therefore
+$$
+\begin{aligned}
+\frac{\partial}{\partial \mu} E(\mu, \sigma) 
+&= \EE\_{Z \sim \mathrm{Normal}(0, 1)}[g'(\mu + \sigma Z)] \\\\
+\frac{\partial}{\partial \sigma} E(\mu, \sigma) 
+&= \sigma \cdot \EE\_{Z \sim \mathrm{Normal}(0, 1)}[g'(\mu + \sigma Z)]
+\end{aligned}
+$$
+
+---
+
+## Location-scale transforms
+
+Location-scale family distributions  $p\_{\muv, \sigma}$ with location $\muv$ and scale $\sigma$ satisfy
+$$
+U \sim p\_{\muv, \sigma} 
+\iff
+\mu + \sigma Z \qquad Z \sim p\_{\mathbf{0}, 1}
+$$
+
+<br>
+
+Examples:
+* Cauchy distribution
+* uniform distribution
+* logistic distribution
+* Laplace distribution
+* Student's $t$-distribution
+
+---
+
+## Pathwise gradient estimator: differentiable transforms
+
+Suppose $U \coloneqq T(Z, \thetav)$, where $T$ is a differentiable transform.
+
+<br>
+
+Let us define
+$$
+E(\thetav) \coloneqq \EE\_{U \sim p\_\thetav}[g(U)]
+= \EE\_{Z \sim p}[g(T(Z, \thetav))]
+$$
+
+<br>
+
+Then
+$$
+\nabla E(\thetav) 
+=
+\EE\_{Z \sim p}[\partial\_2 T(Z, \thetav)^\* \nabla g(T(Z, \thetav))]
+$$
+
+---
+
+## SFE versus PGE
+
+**Score function estimator (SFE)**
+- Needs to sample from $p\_\thetav$
+- Need $\log p\_\thetav(\y)$
+- Blackbox access to $g$
+- $g$ can be defined on $\cY$
+- High variance
+
+**Path gradient estimator (PGE)**
+- Needs to sample from $p\_\thetav$ (after change of variable)
+- No need for $\log p\_\thetav(\y)$
+- Needs access to $\nabla g$
+- $g$ needs to be well-defined on $\mathrm{conv}(\cY)$
+- Low variance
+
+---
+
+## Pushforward distributions: from explicit to implicit distributions
+
+Suppose $Z \sim p$, where $p$ is a distribution over $\cZ$. 
+Given a continuous map $T \colon \cZ \to \cU$, 
+the pushforward distribution of $p$ through $T$
+is the distribution $q$ according to which 
+$U \coloneqq T(Z) \in \cU$ is distributed, 
+i.e., $U \sim q$.
+
+<br>
+
+**Easy to sample from**
+
+$$
+U \sim q
+\iff
+Z \sim p, U \coloneqq T(Z)
+$$
+
+<br>
+
+--
+
+**Easy to compute expectations by Monte-Carlo**
+$$
+\EE\_{U \sim q}[f(U)] 
+= \EE\_{Z \sim p}[f(T(Z))]
+$$
+
+---
+
+## <span style="font-size: 0.95em">Change of variables theorem: from implicit to explicit distributions</span>
+
+Suppose
+$Z \sim p$, where $p$ is a distribution over $\cZ$, with PDF $p\_Z$. 
+
+Let $T \colon \cZ \to \cU$ be a **diffeomorphism**
+(i.e., an invertible and differentiable map).
+
+The pushforward distribution of $p$ through $T$ is the distribution $q$ 
+such that 
+$$
+U \coloneqq T(Z) \sim q
+$$
+and its PDF is
+$$
+q\_U(\u) = |\det(\partial T^{-1}(\u))| p\_Z(T^{-1}(\u))
+$$
+where $\partial T^{-1}(\u)$ is the Jacobian of $T^{-1} \colon \cU \to \cZ$.
+
+<br>
+
+**Normalizing flows** are parametrized transformations $T$ designed such that
+$T^{-1}$ and its Jacobian $\partial T^{-1}$ are easy to compute.
+
+---
+
+class: middle
+
+.center.width-90[![](./figures/differentiating_programs/dist_vs_fun.png)]
+
+<br>
+
+.center[See *stochastic computation graphs* part of the book for more details.]

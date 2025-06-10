@@ -25,7 +25,9 @@
         }
 
         var options = {sourceUrl: getParameterByName("p"),
-                       highlightStyle: "tomorrow"};
+                       highlightStyle: "tomorrow",
+                       countIncrementalSlides: false,
+        };
         var renderMath = function() {
             renderMathInElement(document.body, {delimiters: [ // mind the order of delimiters(!?)
                 {left: "$$", right: "$$", display: true},
