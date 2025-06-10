@@ -504,3 +504,8 @@ td {
 #source {
   display: none;
 }
+
+.outline-link {
+  color: black;
+  text-hover: underline;
+}

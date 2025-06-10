@@ -2,30 +2,10 @@ class: middle, center, title-slide
 
 # The Elements of <br> Differentiable Programming
 
-**Lecture 0: Introduction**
+**Introduction**
 
 <br><br>
 Mathieu Blondel, Vincent Roulet
-
----
-
-# Outline
-
-- Lecture 0: Introduction
-- Lecture 1: Fundamentals
-  * Differentiation
-  * Probabilistic learning
-- Lecture 2: Differentiable programs
-  * Parameterized programs
-  * Control flows
-- Lecture 3: Differentiating through programs
-  * Finite differences
-  * Automatic differentiation
-  * Differentiating through optimization
-  * Differentiating through integration
-- Lecture 4: Smoothing programs
-  * Smoothing by optimization
-  * Smoothing by integration
 
 ---
 
@@ -161,3 +141,24 @@ class: middle
 
 <br>
 
+---
+
+# Outline
+
+- Introduction
+- Part I: Fundamentals
+  * Differentiation
+  * Probabilistic learning
+- Part II: Differentiable programs
+  * Parameterized programs
+  * Control flows
+- Part III: Differentiating through programs
+  * Finite differences
+  * Automatic differentiation
+  * Differentiating through optimization
+  * Differentiating through integration
+- Part IV: Smoothing programs
+  * Smoothing by optimization
+  * Smoothing by integration
+
+---

@@ -15,23 +15,25 @@ $$
 
 # The Elements of <br> Differentiable Programming
 
-**Lecture 1: Fundamentals**
+**Part I: Fundamentals**
 
 <br><br>
 Mathieu Blondel, Vincent Roulet
 
 ---
 
-# Outline
+name: diff
 
-- Differentiation
+.center.smaller[**Part I: Fundamentals**]
+
+- **Differentiation**
   * Continuous functions
   * Differentiable functions
   * Gradients
   * Jacobians
   * Linear maps: JVPs and VJPs
   * Hessians and Hessian-vector products (HVPs)
-- Probabilistic learning
+- <a class="outline-link" href="#probaLearning">Probabilistic learning</a>
 
 ---
 
@@ -570,3 +572,18 @@ $$
 \v \mapsto \nabla^2 f(\w)[\v]
 $$ 
 is called the Hessian-vector product (HVP).
+
+---
+
+name: probaLearning
+
+.center.smaller[**Part I: Fundamentals**]
+
+- <a class="outline-link" href="#diff">Differentiation</a>
+  * Continuous functions
+  * Differentiable functions
+  * Gradients
+  * Jacobians
+  * Linear maps: JVPs and VJPs
+  * Hessians and Hessian-vector products (HVPs)
+- **Probabilistic learning**

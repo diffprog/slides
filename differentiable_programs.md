@@ -20,14 +20,16 @@ $$
 
 # The Elements of <br> Differentiable Programming
 
-**Lecture 2: Differentiable programs**
+**Part II: Differentiable programs**
 
 <br><br>
 Mathieu Blondel, Vincent Roulet
 
 ---
 
-# Outline
+name: paramPrograms
+
+.center.smaller[**Part II: Differentiable programs**]
 
 - **Pararameterized programs**
   * Computation chains
@@ -36,7 +38,7 @@ Mathieu Blondel, Vincent Roulet
   * Activation functions
   * Directed acyclic graphs (DAGs)
   * Computation graphs
-- Control flows
+- <a class="outline-link" href="#controlFlows">Control flows</a>
 
 ---
 
@@ -287,9 +289,11 @@ Functions and variables are represented by a disjoint set of nodes (bipartite gr
 
 ---
 
-# Outline
+name: controlFlows
 
-- Pararameterized programs
+.center.smaller[**Part II: Differentiable programs**]
+
+- <a class="outline-link" href="#paramPrograms">Pararameterized programs</a>
 - **Control flows**
   * Inequality operators
   * Equality operators

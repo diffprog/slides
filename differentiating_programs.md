@@ -30,7 +30,7 @@ $$
 
 # The Elements of <br> Differentiable Programming
 
-**Lecture 3:** Differentiating through programs
+**Part III:** Differentiating through programs
 
 <br><br>
 Mathieu Blondel, Vincent Roulet
@@ -39,7 +39,7 @@ Mathieu Blondel, Vincent Roulet
 
 name: finiteDiff
 
-# Outline
+.center.smaller[**Part III: Differentiating through programs**]
 
 - **Finite differences**
   * Forward and backward differences
@@ -47,9 +47,9 @@ name: finiteDiff
   * Central differences
   * Complex-step derivatives
   * Complexity
-- <a href="#autodiff">Automatic differentiation</a>
-- <a href="#diffThroughOptim">Differentiating through optimization</a>
-- <a href="#diffThroughIntegration">Differentiating through integration</a>
+- <a class="outline-link" href="#autodiff">Automatic differentiation</a>
+- <a class="outline-link" href="#diffThroughOptim">Differentiating through optimization</a>
+- <a class="outline-link" href="#diffThroughIntegration">Differentiating through integration</a>
 
 ---
 
@@ -193,17 +193,17 @@ How many **function calls** are needed to compute the gradient?
 
 name: autodiff
 
-# Outline
+.center.smaller[**Part III: Differentiating through programs**]
 
-- <a href="#finiteDiff">Finite differences</a>
+- <a class="outline-link" href="#finiteDiff">Finite differences</a>
 - **Automatic differentiation**
   * Computation chains (forward and reverse modes)
   * Computation graphs (forward and reverse modes)
   * Checkpointing
   * Reversible layers
   * Randomized forward-mode estimator
-- <a href="#diffThroughOptim">Differentiating through optimization</a>
-- <a href="#diffThroughIntegration">Differentiating through integration</a>
+- <a class="outline-link" href="#diffThroughOptim">Differentiating through optimization</a>
+- <a class="outline-link" href="#diffThroughIntegration">Differentiating through integration</a>
 
 ---
 
@@ -540,25 +540,25 @@ In practice, we approximate the expectation using Monte-Carlo estimation.
 
 name: diffThroughOptim
 
-# Outline
+.center.smaller[**Part III: Differentiating through programs**]
 
-- <a href="#finiteDiff">Finite differences</a>
-- <a href="#autodiff">Automatic differentiation</a>
+- <a class="outline-link" href="#finiteDiff">Finite differences</a>
+- <a class="outline-link" href="#autodiff">Automatic differentiation</a>
 - **Differentiating through optimization**
   * Implicit functions
   * Envelope theorems
   * Implicit function theorem
-- <a href="#diffThroughIntegration">Differentiating through integration</a>
+- <a class="outline-link" href="#diffThroughIntegration">Differentiating through integration</a>
 
 ---
 
 name: diffThroughIntegration
 
-# Outline
+.center.smaller[**Part III: Differentiating through programs**]
 
-- <a href="#finiteDiff">Finite differences</a>
-- <a href="#autodiff">Automatic differentiation</a>
-- <a href="#diffThroughOptim">Differentiating through optimization</a>
+- <a class="outline-link" href="#finiteDiff">Finite differences</a>
+- <a class="outline-link" href="#autodiff">Automatic differentiation</a>
+- <a class="outline-link" href="#diffThroughOptim">Differentiating through optimization</a>
 - **Differentiating through integration**
   * Differentiation under the integral sign
   * Differentiating through expectations
