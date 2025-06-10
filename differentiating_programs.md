@@ -552,6 +552,56 @@ name: diffThroughOptim
 
 ---
 
+## Implicit functions
+
+Functions implicitly defined through optimality conditions.
+
+<br>
+
+*Example 1:* through an **optimization problem**
+$$
+\w^\star(\lambdav) = \argmax\_{\w \in \cW} f(\w, \lambdav)
+$$
+
+<br>
+
+*Example 2:* through a **nonlinear equation**
+$$
+F(\w, \lambdav) = \mathbf{0}
+$$
+
+<br>
+**Sensivity analysis**
+
+$\w^\star(\lambdav)$ corresponds to the equilibrium state of a
+physical system. 
+
+$\partial \w^\star(\lambdav)$ tells us
+about the sensitivity of the system to some parameters $\lambdav \in \Lambda$.
+
+---
+
+## Bi-level optimization
+
+$$
+h(\lambdav) \coloneqq g(\w^\star(\lambdav), \lambdav)
+\quad \text{where} \quad
+\w^\star(\lambdav) \coloneqq \argmax\_{\w \in \cW} f(\w, \lambdav)
+$$
+
+<br>
+
+Example: hyperparameter optimization
+
+* $f$: training loss
+* $g$: validation loss
+
+<br>
+
+.center.width-80[![](./figures/differentiating_programs/hyperparam_optim.png)]
+
+---
+
 name: diffThroughIntegration
 
 .center.smaller[**Part III: Differentiating through programs**]
