@@ -459,3 +459,41 @@ $$
 \s\_{i\_{p\_k}})^\*[\r\_k]
 = \sum\_{j \in \mathrm{ch}(k)} \deltav_{j,k}
 $$
+
+---
+
+## Checkpointing
+
+**Reverse mode** 
+
+Time complexity is optimal for scalar-valued functions but we need to store **all** intermediate values.
+
+**Reverse mode with checkpointing**
+
+Trades off computational complexity for better memory, by selectively storing only a **subset** of the intermediate values.
+
+Divide-and-conquer strategies:
+* Recursive halving: repeatedly split in half
+* Dynamic programming: find optimal splits
+
+---
+
+## Reversible layers
+
+If $f\_k$ is invertible, we can recover $\s\_{k-1}$ from $\s\_k$ by
+$$
+\s\_{k-1} = f\_k^{-1}(\s\_k)
+$$
+No need to store the intermediate values!
+
+**Reversible architectures by design**
+
+Reversible residual networks,
+orthonormal RNNs,
+neural ODEs,
+momentum nets,
+...
+
+<br>
+
+.center.width-90[![](./figures/differentiating_programs/reverse_mode_reversible_layer.png)]
