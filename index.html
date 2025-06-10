@@ -36,7 +36,57 @@
                 {left: "\\(", right: "\\)", display: false},
             ]});
         }
-      var slideshow = remark.create(options, renderMath);
+
+        // We create an "async" function to handle the fetching and processing.
+        async function initializeSlideshow() {
+            try {
+                const sourceUrl = getParameterByName("p");
+                if (!sourceUrl) {
+                    console.error("No presentation URL found in 'p' parameter.");
+                    return;
+                }
+
+                // Check for the 'h=1' parameter to hide increments.
+                const shouldHideIncrements = getParameterByName('h') === '1';
+
+                // Define the base options for the slideshow.
+                let slideshowOptions = {
+                    highlightStyle: "tomorrow",
+                    countIncrementalSlides: false,
+                };
+
+                if (shouldHideIncrements) {
+                    // h=1 is present.
+                    console.log("Hiding incremental slides.");
+
+                    // Fetch, replace '--', and pass the modified source directly.
+                    const response = await fetch(sourceUrl);
+                    if (!response.ok) {
+                        console.error("Failed to fetch presentation:", response.statusText);
+                        return;
+                    }
+                    const originalMarkdown = await response.text();
+                    const modifiedMarkdown = originalMarkdown.replace(/(?<!-)--(?!-)/g, '');
+                    slideshowOptions.source = modifiedMarkdown; // Use the 'source' property
+
+                } else {
+                    // h=1 is not present.
+                    console.log("Incremental slides enabled (normal behavior).");
+
+                    // Let remark.js handle the fetching and rendering normally
+                    slideshowOptions.sourceUrl = sourceUrl; // Use the 'sourceUrl' property
+                }
+
+                // Finally, create the slideshow with the determined options
+                var slideshow = remark.create(slideshowOptions, renderMath);
+
+            } catch (error) {
+                console.error("An error occurred during slideshow initialization:", error);
+            }
+        }
+
+        // Run the function to start the process.
+        initializeSlideshow();
     </script>
   </body>
 </html>
