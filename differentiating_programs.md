@@ -746,6 +746,34 @@ $$
 
 ---
 
+## Adjoint state method
+
+Composition of an **explicit** function and an **implicit** function
+$$
+L(\w) \coloneqq L(\s^\star(\w), \w)
+\quad \text{where} \quad
+c(\s^\star(\w), \w) = \mathbf{0}
+$$
+
+<br>
+Its gradient is given by
+$$
+\nabla L(\w) = 
+\nabla\_2 L(\s^\star(\w), \w) + \partial\_2 c(\s^\star(\w), \w)^\* \r^\star(\w)
+$$
+
+<br>
+
+where $\r^\star(\w)$ is given by the solution of
+$$
+\partial\_1 c(\s^\star(\w), \w)^\* \r = -\nabla\_1 L(\s^\star(\w), \w)
+$$
+
+<br>
+Classically proven using the method of Lagrange multipliers or the IFT.
+
+---
+
 name: diffThroughIntegration
 
 .center.smaller[**Part III: Differentiating through programs**]
