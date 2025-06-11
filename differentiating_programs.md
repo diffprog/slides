@@ -602,6 +602,150 @@ Example: hyperparameter optimization
 
 ---
 
+## Envelope theorem, Danskin's theorem
+
+In the special case $f=g$, we get the **maximum** of functions
+$$
+h(\lambdav) 
+= f(\w^\star(\lambdav), \lambdav)
+= \max_{\w \in \cW} f(\w, \lambdav)
+$$
+Then under assumptions on $f$,
+$$
+\nabla h(\lambdav) = \nabla\_2 f(\w^\star(\lambdav), \lambdav)
+$$
+We can pretend $\w^\star(\lambdav)$ doesn't depend on $\lambdav$!
+
+.center.width-60[![](./figures/differentiating_programs/envelope_theorem.png)]
+
+---
+
+## Example
+
+Let us define
+$$
+h(\lambda) \coloneqq \min_{w \in \RR} f(w, \lambda)
+\quad \text{where} \quad
+f(w, \lambda) \coloneqq \frac{\lambda}{2} w^2 + b w + c, \lambda > 0
+$$
+
+<br>
+
+The derivative of $f$ w.r.t. $\lambda$ is $\frac{1}{2} w^2$
+
+<br>
+
+From Danskin's theorem, we therefore have 
+$$
+h'(\lambda) = \frac{1}{2} w^\star(\lambda)
+$$
+where
+$$
+w^\star(\lambda) = -\frac{b}{\lambda}
+$$
+
+---
+
+## Implicit function theorem: univariate case
+
+Provides **conditions** under which, for an implicit relationship of the form $F(w, \lambda) = 0$, there **exists** 
+a function $w = w^\star(\lambda)$ locally in a neighborhood.
+
+Provides a way to compute the derivative of $w^\star(\lambda)$, but not $w^\star(\lambda)$ itself.
+
+**Example: the unit circle** 
+
+$F(x, y) = x^2 + y^2 - 1 = 0$ where $x \equiv w$ and $y \equiv \lambda$
+
+Not a function because for every $y \in [-1, 1]$, $x = \sqrt{1 - y^2}$ or $x = -\sqrt{1 - y^2}$.
+
+But locally around $(x\_0, y\_0)$ for $x\_0 > 0$ and $y\_0 > 0$, we have $x = \sqrt{1 - y^2}$.
+
+---
+
+## Implicit function theorem: univariate case
+
+Let $F \colon \RR \times \RR \to \RR$.
+Assume $F(w, \lambda)$ is a continuously differentiable function in a 
+neighborhood $\cU$ of $(w\_0, \lambda\_0)$ such that
+$F(w\_0, \lambda\_0) = 0$
+and
+$\partial\_1 F(w\_0, \lambda\_0) \neq 0$.
+Then there exists a neighborhood $\cV \subseteq \cU$ of $(w\_0, \lambda\_0)$ in
+which there is a function $w^\star(\lambda)$ such that
+
+* $w^\star(\lambda\_0) = w\_0$
+
+* $F(w^\star(\lambda), \lambda) = 0$ for all $\lambda$ in the neighborhood $\cV$
+
+* $\partial w^\star(\lambda) = -\frac{\partial\_2 F(w^\star(\lambda), \lambda)}{
+\partial\_1 F(w^\star(\lambda), \lambda)}$
+
+**Example: the unit circle** 
+
+$F(x, y) = x^2 + y^2 - 1 = 0$ where $x \equiv w$ and $y \equiv \lambda$
+
+$$
+\partial x^\star(y) 
+= -\frac{\partial\_2 F(x^\star(y), y)}{\partial\_1 F(x^\star(y), y)}
+= - \frac{2y}{2 x^\star(y)} 
+= -\frac{y}{\sqrt{1 - y^2}}
+$$
+Matches the derivative by chain rule of $\sqrt{1 - y^2}$ on $y \in [0, 1)$.
+
+---
+
+## Implicit function theorem: multivariate case
+
+Let $F \colon \cW \times \Lambda \to \cW$.
+Assume $F(\w, \lambdav)$ is a continuously differentiable function in a 
+neighborhood of $(\w\_0, \lambdav\_0)$ such that
+$F(\w\_0, \lambdav\_0) = \mathbf{0}$
+and
+$\partial\_1 F(\w\_0, \lambdav\_0)$ is invertible, i.e.,
+its determinant is nonzero.
+Then there exists a neighborhood of $\lambdav\_0$ in which
+there is a function $\w^\star(\lambdav)$ 
+such that
+* $\w^\star(\lambdav\_0) = \w\_0$
+
+* $F(\w^\star(\lambdav), \lambdav) = \mathbf{0}$ for all $\lambdav$ in the neighborhood
+
+* $-\partial\_1 F(\w^\star(\lambdav), \lambdav)  \partial \w^\star(\lambdav) =  \partial\_2 F(\w^\star(\lambdav),\lambdav)$
+
+$ \iff \partial \w^\star(\lambdav) 
+= -\partial\_1 F(\w^\star(\lambdav), \lambdav)^{-1} \partial\_2 F(\w^\star(\lambdav),
+\lambdav)$
+
+---
+
+## Example: unconstrained optimization
+
+$$
+\w^\star(\lambdav) = \argmin\_{\w \in \RR^P} f(\w, \lambdav)
+$$
+
+<br>
+
+Optimality condition $F(\w, \lambdav) \coloneqq \nabla\_1 f(\w, \lambdav)$
+
+<br>
+
+$\partial\_1 F(\w, \lambdav) = \nabla^2\_1 f(\w, \lambdav)$ (Hessian of $f$ in $\w$)
+
+$\partial\_2 F(\w, \lambdav) = \partial\_2 \nabla\_1 f(\w, \lambdav)$
+(cross derivatives of $f$ in $\w$ and $\lambdav$)
+
+<br>
+
+From the implicit function theorem (IFT)
+$$
+\partial \w^\star(\lambdav) = -(\nabla^2\_1 f(\w^\star(\lambdav), \lambdav))^{-1}
+ \partial\_2 \nabla\_1 f(\w^\star(\lambdav), \lambdav)
+$$
+
+---
+
 name: diffThroughIntegration
 
 .center.smaller[**Part III: Differentiating through programs**]

@@ -29,12 +29,19 @@
                        countIncrementalSlides: false,
         };
         var renderMath = function() {
-            renderMathInElement(document.body, {delimiters: [ // mind the order of delimiters(!?)
+            renderMathInElement(document.body, {
+
+              delimiters: [ // mind the order of delimiters(!?)
                 {left: "$$", right: "$$", display: true},
                 {left: "$", right: "$", display: false},
                 {left: "\\[", right: "\\]", display: true},
                 {left: "\\(", right: "\\)", display: false},
-            ]});
+            ],
+              macros: {                     
+                '\\neq': '\\mathrel{\\char`≠}'
+              }
+
+            });
         }
 
         // We create an "async" function to handle the fetching and processing.
