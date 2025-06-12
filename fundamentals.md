@@ -7,6 +7,8 @@ $$
 \gdef\x{\bm{x}}
 \gdef\y{\bm{y}}
 \gdef\w{\bm{w}}
+\gdef\muv{{\bm{\mu}}}
+\gdef\thetav{{\bm{\theta}}}
 \gdef\lambdav{{\bm{\lambda}}}
 \gdef\piv{{\bm{\pi}}}
 \gdef\RR{\mathbb{R}}
@@ -764,3 +766,98 @@ $-\log p(y)$: Poisson loss
 <br>
 
 .center.width-100[![](./figures/fundamentals/poisson.png)]
+
+---
+
+## Exponential family distributions
+
+Class of probability distributions whose PMF or PDF can be written as
+$$
+p\_\thetav(\y) 
+= \frac{h(\y) \exp\left[\langle \thetav, \phi(\y) \rangle\right]}{\exp(A(\thetav))}
+= h(\y) \exp\left[\langle \thetav, \phi(\y) \rangle - A(\thetav)\right]
+$$
+$\thetav$: natural parameters, $\phi$: sufficient statistic, $h$: base measure, $A$: log-partition
+
+We can usually convert from original parameters $\lambdav$ to natural parameters $\thetav$.
+
+**Example:** Bernoulli distribution with original parameter $\lambda = \pi$
+
+$$
+\begin{aligned}
+p\_\lambda(y)
+&\coloneqq \pi^y (1-\pi)^{1-y} \\\\
+&= \exp(\log(\pi^y (1-\pi)^{1-y})) \\\\
+&= \exp(y \log(\pi) + (1-y) \log(1-\pi)) \\\\
+&= \exp(\log(\pi/(1-\pi)) y + \log(1 - \pi)) \\\\
+&= \exp(\theta y - \log(1 + \exp(\theta))) \\\\
+&= \exp(\theta y - \mathrm{softplus}(\theta)) \\\\
+&\eqqcolon p\_\theta(y)
+\end{aligned}
+$$
+where 
+$\theta = \mathrm{logit}(\pi) \coloneqq \log(\pi/(1+\pi))
+\iff
+\pi = \mathrm{logistic}(\theta) = \frac{1}{1 + +\exp(-\theta)}
+$.
+
+---
+
+class: middle
+
+.center.width-80[![](./figures/fundamentals/table_exp_family.png)]
+
+---
+
+## Log-partition function
+
+$A$ is the logarithm of the distribution's normalization factor
+$$
+A(\thetav) 
+\coloneqq
+\log \sum_{\y \in \cY} h(\y) \exp\left[\langle \thetav, \phi(\y)
+\rangle\right]
+$$
+
+<br>
+
+$A(\thetav)$ is a convex function
+
+<br>
+
+The gradient $\nabla A(\thetav)$ is the expectation
+$$
+\muv(\thetav) 
+\coloneqq \nabla A(\thetav)
+= \EE\_{Y \sim p_\thetav}[\phi(Y)]
+$$
+
+---
+
+## Negative log-likelihood of exponential family distribution
+
+**Loss function**
+$$
+-\log p\_\thetav(\y)
+= A(\thetav) - \langle \thetav, \phi(\y) \rangle - \log h(\y)
+$$
+A convex function w.r.t. $\thetav$
+
+<br>
+
+**Gradient**
+$$
+-\nabla\_\thetav \log p\_\thetav(\y)
+= \nabla A(\thetav) - \phi(\y)
+= \EE\_{Y \sim p_\thetav}[\phi(Y)] - \phi(\y)
+$$
+First moment matching!
+
+<br>
+
+**Objective function**
+$$
+L(\w) \coloneqq -\sum\_{i=1}^N \log p\_{\thetav\_i}(\y\_i)
+$$
+where $\thetav\_i \coloneqq f(\x\_i, \w)$
+
