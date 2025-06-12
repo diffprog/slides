@@ -24,10 +24,8 @@ name: optim
 - **Smoothing by optimization**
   * Infimal convolution
   * Moreau envelope
+  * Dual approach
 - <a class="outline-link" href="#integration">Smoothing by integration</a>
-  * Convolution
-  * Perturbation of blackbox functions
-  * Gumbel tricks
 
 ---
 
@@ -63,7 +61,7 @@ $$
 
 ## Moreau envelope
 
-The Moreau envelope of a function $f$ is a smooth approximation of it.
+The Moreau envelope of a function $f$ is a **smooth approximation** of it.
 
 It is equal to the infimum colution of $f$ with $R(\z) \coloneqq \frac{1}{2} \\|\z\\|^2$
 
@@ -108,6 +106,52 @@ $$
 class: middle
 
 .center.width-100[![](./figures/smoothing/moreau_env_non_cvx.png)]
+
+---
+
+## Legendre-Fenchel transform (convex conjugate)
+
+The Legendre-Fenchel transform of $f$ is another function denoted $f^\*$
+$$
+f^\*(\v) \coloneqq \sup\_{\u \in \mathrm{dom}(f)}
+\langle \u, \v \rangle - f(\u)
+$$
+
+<br>
+
+.center.width-80[![](./figures/smoothing/tightest_lower_bound.png)]
+$u \mapsto uv - f^\*(v)$
+is the tighest affine lower bound of $f$ with a fixed slope $v$.
+
+---
+
+class: middle
+
+.center.width-100[![](./figures/smoothing/conjugate.png)]
+
+Instead of representing a convex function $f$ by its graph $(\u, f(\u))$
+we can represent it by the set of tangents with slope $\v$ and
+intercept $-f^\*(\v)$.
+
+---
+
+## Dual approach
+
+If $f$ and $R$ are both convex and closed, we have
+$$
+f \square R = (f^\* + R^\*)^\*
+$$
+Go to the dual $f^\*$, add regularization $R^\*$ and come back to the primal.
+
+The dual approach is often more convenient.
+
+**Example: smoothed ReLU**
+
+* $f(u) = \max(u, 0)$
+* $f^\*(v) = \iota_{[0,1]}(v) = 0 \text{ if } v \in [0,1] \text{ else } \infty$
+* $(f + R^\*)^\*(u) \approx f(u)$
+
+.center.width-50[![](./figures/smoothing/smoothed_relu.png)]
 
 ---
 
