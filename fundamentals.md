@@ -5,12 +5,22 @@ $$
 \gdef\u{\bm{u}}
 \gdef\v{\bm{v}}
 \gdef\x{\bm{x}}
+\gdef\y{\bm{y}}
 \gdef\w{\bm{w}}
+\gdef\lambdav{{\bm{\lambda}}}
+\gdef\piv{{\bm{\pi}}}
 \gdef\RR{\mathbb{R}}
+\gdef\EE{\mathbb{E}}
+\gdef\VV{\mathbb{V}}
+\gdef\PP{\mathbb{P}}
+\gdef\NN{\mathbb{N}}
 \gdef\jac{\bm{\partial}}
 \gdef\cE{\mathcal{E}}
 \gdef\cF{\mathcal{F}}
 \gdef\cG{\mathcal{G}}
+\gdef\cW{\mathcal{W}}
+\gdef\cX{\mathcal{X}}
+\gdef\cY{\mathcal{Y}}
 $$
 
 # The Elements of <br> Differentiable Programming
@@ -587,3 +597,170 @@ name: probaLearning
   * Linear maps: JVPs and VJPs
   * Hessians and Hessian-vector products (HVPs)
 - **Probabilistic learning**
+  * Supervised learning
+  * Deterministic vs. probabilistic approaches
+  * Learning a parameterized model
+  * Binary classification, multiclass classification, regression, integer regression
+  * Exponential family distribution
+
+---
+
+## Supervised learning
+
+Predict $\y \in \cY$ from $\x \in \cX$
+
+<br>
+
+**Input space**
+
+$\cX \subseteq \RR^D$
+
+<br>
+
+**Output space**
+
+* Regression $\cY = \RR$
+* Multivariate regression $\cY = \RR^M$
+* Binary classification $\cY = \\{0,1\\}$
+* Multiclass classification $\cY = [M] = \\{1, \dots, M\\}$
+* Integer regression $\cY = \NN$
+* Structured prediction $\cY = $ permutations, trees, sequences, ...
+
+---
+
+## Deterministic vs. probabilistic approaches
+
+**Deterministic approach** 
+
+Learn a mapping $\cX \to \cY$
+
+<br>
+
+**Probabilistic approach** 
+
+Learn a mapping $f \coloneqq \cX \to \Lambda$
+from input space $\cX$ to **distribution parameters** $\Lambda$
+$$
+\begin{aligned}
+\lambdav &\coloneqq f(\x) \\\\
+Y &\sim p\_\lambdav
+\end{aligned}
+$$
+
+*Inference*
+
+* Probability: $\PP(Y = \y | X = \x) = p\_\lambdav(\y) = p\_{f(\x)}(\y)$
+* Expectation: $\EE(\phi(Y) | X = \x)$ for some mapping $\phi$
+* Variance: $\VV(\phi(Y) | X = \x)$
+* Mode: $\argmax\_{\y \in \cY} p\_\lambdav(\y) = \argmax\_{\y \in \cY} p\_{f(\x)}(\y)$
+
+---
+
+## Learning a parameterized model
+
+**Deterministic approach** 
+
+$$
+L(\w) \coloneqq \frac{1}{N} \sum\_{i=1}^N \ell(f(\x\_i, \w), \y\_i)
+\qquad f \colon \cX \times \cW \to \cY \quad \ell \colon \cY \times \cY \to \RR
+$$
+
+*Discontinuous* if $\cY$ is a discrete output space! (e.g., classification)
+
+<br>
+
+**Probabilistic approach**
+
+$$
+L(\w) \coloneqq \frac{1}{N} \sum\_{i=1}^N \ell(f(\x\_i, \w), \y\_i)
+\qquad f \colon \cX \times \cW \to \Lambda \quad \ell \colon \Lambda \times \cY \to \RR
+$$
+
+*Continuous* and *differentiable* even if $\cY$ is a discrete output space!
+
+<br>
+
+Negative log-likelihood: $\ell(\lambdav, \y) \coloneqq -\log p\_\lambdav(\y)$
+
+---
+
+## Binary classification
+
+<br>
+
+$\cY = \\{0, 1\\}$
+
+$Y \sim \mathrm{Bernoulli}(\pi)$ with parameter $\lambda \coloneqq \pi \in [0,1]$
+
+$p_\pi(y) = \pi^y (1-\pi)^{1 -y}$
+
+$\pi \coloneqq f(\x, \w) \coloneqq \mathrm{logistic}(g(\x, \w))
+= \frac{1}{1 + \exp(-g(\x, \w))}$
+
+$-\log p(y)$: binary logistic loss (a.k.a. binary cross-entropy loss)
+
+<br>
+
+.center.width-100[![](./figures/fundamentals/bernoulli.png)]
+
+---
+
+## Multiclass classification
+
+<br>
+
+$\cY = [M] = \\{1, \dots, M\\}$
+
+$Y \sim \mathrm{Categorical}(\piv)$ with parameter $\lambdav \coloneqq \piv \in \triangle^M$
+
+$p_\pi(y) = \pi\_y$
+
+$\piv \coloneqq f(\x, \w) \coloneqq \mathrm{softargmax}(g(\x, \w))$
+
+$-\log p(y)$: multiclass logistic loss (a.k.a. cross-entropy loss)
+
+<br>
+
+.center.width-100[![](./figures/fundamentals/categorical.png)]
+
+---
+
+## Regression
+
+<br>
+
+$\cY = \RR$
+
+$Y \sim \mathrm{Normal}(\mu, \sigma)$ with parameters $\lambdav \coloneqq (\mu, \sigma) \in \RR \times \RR_+$
+
+$p_{\mu,\sigma}(y) \coloneqq 
+\frac{1}{\sigma \sqrt{2\pi} }
+\exp\left(-\frac{1}{2}\frac{(y-\mu)^2}{\sigma^2}\right)$
+
+$\mu \coloneqq f(\x, \w) \in \RR$ &nbsp;&nbsp;&nbsp;($\sigma$ is typically fixed to $1$)
+
+$-\log p(y)$: squared loss up to constant
+
+<br>
+
+.center.width-100[![](./figures/fundamentals/gaussian.png)]
+
+---
+
+## Integer regression
+
+<br>
+
+$\cY = \NN$
+
+$Y \sim \mathrm{Poisson}(\lambda)$ with parameter $\lambda > 0$
+
+$p_\lambda(y) \coloneqq \frac{\lambda^y \exp(-\lambda)}{y!}$
+
+$\lambda \coloneqq f(\x, \w) \coloneqq \exp(g(\x, \w)) > 0$
+
+$-\log p(y)$: Poisson loss 
+
+<br>
+
+.center.width-100[![](./figures/fundamentals/poisson.png)]
