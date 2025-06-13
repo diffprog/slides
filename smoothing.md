@@ -2,6 +2,7 @@ class: middle, center, title-slide
 
 $$
 \gdef\cF{\mathcal{F}}
+\gdef\e{\bm{e}}
 \gdef\u{\bm{u}}
 \gdef\v{\bm{v}}
 \gdef\z{\bm{z}}
@@ -338,3 +339,48 @@ U = \muv + \sigma Z, ~ Z\_i \sim \mathrm{Gumbel}(0, 1)
 $$
 
 .center.width-45[![](./figures/smoothing/gumbel_pdf.png)]
+
+---
+
+## Gumbel trick for categorical variables
+
+$Z \sim \mathrm{Gumbel}(\zeros, 1) \in \RR^M$
+
+<br>
+
+**Perturbed argmax**
+
+$$
+i(\u) \coloneqq \argmax\_{i \in [M]} u\_i
+$$
+
+$$
+Y \coloneqq i(\muv + \sigma \cdot Z)
+\iff
+Y \sim
+\mathrm{Categorical}(\mathrm{softargmax}(\muv / \sigma))
+$$
+
+$$
+\EE\_Y[\e\_Y] = \mathrm{softargmax}(\muv / \sigma)
+$$
+
+<br>
+
+**Perturbed max**
+
+$$
+f(\u) \coloneqq \max\_{i \in [M]} u\_i 
+$$
+
+$$
+V \coloneqq f(\muv + \sigma \cdot Z)
+\iff
+V \sim
+\mathrm{Gumbel}(\sigma \mathrm{LSE}(\muv/\sigma), \sigma)
+$$
+
+$$
+\EE\_V[V]
+= \sigma \cdot \mathrm{LSE}(\muv / \sigma)
+$$
