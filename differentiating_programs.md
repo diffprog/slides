@@ -486,6 +486,8 @@ Divide-and-conquer strategies:
 * Recursive halving: repeatedly split in half
 * Dynamic programming: find optimal splits
 
+.center.width-50[![](./figures/differentiating_programs/checkpointing.png)]
+
 ---
 
 ## Reversible layers
