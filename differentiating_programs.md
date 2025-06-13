@@ -526,17 +526,13 @@ $$
 = \EE\_{Z \sim p} \left[\langle \nabla f(\muv), Z \rangle Z \right]
 $$
 
-<br>
-
 where $p \coloneqq \mathrm{Normal}(0,1)^P$ is the isotropic Gaussian distribution.
 
 <br>
 
-In practice, we approximate the expectation using Monte-Carlo estimation.
+**Unbiased** but **high variance** estimator: this slows down the convergence of SGD.
 
-<br>
-
-**Unbiased but high variance estimator:** this slows down the convergence of SGD.
+.center.width-65[![](./figures/differentiating_programs/randomized_forward_mode.png)]
 
 ---
 
