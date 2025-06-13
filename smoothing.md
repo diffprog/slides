@@ -312,3 +312,29 @@ $$
 $$
 OK even if $f$ is blackbox but **high-variance** estimator. <br>
 Adding variance reduction leads to so-called **evolution strategies** (see book).
+
+---
+
+## Gumbel distribution
+
+Distribution frequently used in extreme value theory. 
+
+**Standard Gumbel distribution**
+
+$$
+p(z) \coloneqq \exp(-\nu(z))
+\quad \text{where} \quad
+\nu(z) \coloneqq z + \gamma + \exp(-(z+\gamma))
+$$
+where $\gamma \approx 0.577$ is Euler's constant.
+
+We use a **centered** definition, such that $\EE[Z] = 0$.
+
+**Gumbel distribution with mean $\muv$ and scale $\sigma$**
+$$
+U \sim \mathrm{Gumbel}(\muv, \sigma) 
+\iff 
+U = \muv + \sigma Z, ~ Z\_i \sim \mathrm{Gumbel}(0, 1)
+$$
+
+.center.width-45[![](./figures/smoothing/gumbel_pdf.png)]
