@@ -5,6 +5,7 @@ $$
 \gdef\e{\bm{e}}
 \gdef\u{\bm{u}}
 \gdef\v{\bm{v}}
+\gdef\y{\bm{y}}
 \gdef\z{\bm{z}}
 \gdef\muv{\bm{\mu}}
 \gdef\RR{\mathbb{R}}
@@ -384,3 +385,50 @@ $$
 \EE\_V[V]
 = \sigma \cdot \mathrm{LSE}(\muv / \sigma)
 $$
+
+---
+
+## Gumbel softargmax
+
+Suppose we want to smooth out the **composition** 
+$h(\u) \coloneqq g(\y(\u))$ between some function 
+$g \colon \\{\e\_1, \dots, \e\_M\\} \to \RR$ and the argmax
+$$
+\y(\u) \coloneqq \argmax\_{\y \in \\{\e\_1, \dots, \e\_M\\}} \langle \y, \u \rangle
+$$
+
+<br>
+We can do so by
+$$
+h\_\sigma(\muv) 
+\coloneqq \EE\_Z \left[g(\y(\muv + \sigma Z))\right]
+$$
+
+<br>
+How to compute the gradient $\nabla h\_\sigma(\muv)$? 
+
+* We could use SFE but it has high variance.
+
+* We cannot swap differentiation and integration (expectation).
+
+---
+
+## Gumbel softargmax
+
+**Key idea:** replace argmax with softargmax
+$$
+h\_{\sigma,\tau}(\muv) 
+\coloneqq \EE\_Z \left[g(\mathrm{softargmax}\_\tau(\muv + \sigma Z))\right]
+$$
+
+<br>
+
+**Pros**
+* Low variance gradient estimator
+* $\nabla h\_{\sigma,\tau}(\muv) \to h\_\sigma(\muv)$ as $\tau \to 0$
+
+<br>
+
+**Cons**
+* Introduces an additional temperature parameter $\tau$
+* $g$ needs to be well-defined on $\triangle^M$ instead of $\\{\e\_1, \dots, \e\_M\\}$
