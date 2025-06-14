@@ -9,6 +9,8 @@ Mathieu Blondel, Vincent Roulet
 
 ---
 
+## The pillars of modern AI
+
 .center.width-80[![](./figures/intro/pillars.png)]
 
 ---
