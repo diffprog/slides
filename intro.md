@@ -9,19 +9,7 @@ Mathieu Blondel, Vincent Roulet
 
 ---
 
-## The pillars of modern AI
-
-Artificial intelligence has recently experienced remarkable advances thanks to:
-
-- Large models
-
-- Vast datasets
-
-- Accelerated hardware (GPU, TPU)
-
-- **Differentiable programming**
-  * Parameterized programs (neural networks)
-  * Automatic differentiation
+.center.width-80[![](./figures/intro/pillars.png)]
 
 ---
 
@@ -160,5 +148,3 @@ class: middle
 - Part IV: Smoothing programs
   * Smoothing by optimization
   * Smoothing by integration
-
----
