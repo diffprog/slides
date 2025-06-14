@@ -1,6 +1,8 @@
 class: middle, center, title-slide
 
 $$
+\gdef\a{\bm{a}}
+\gdef\b{\bm{b}}
 \gdef\e{\bm{e}}
 \gdef\u{\bm{u}}
 \gdef\v{\bm{v}}
@@ -331,6 +333,63 @@ We can directly see $\partial f(\bm{W})$ as a **linear map** (a.k.a. **linear op
 
 ---
 
+## Linear maps
+
+$l:\cE\rightarrow \cF$ is a linear map if for any $\w, \v \in \cE$ and $a, b \in \RR$
+$$
+l[a\w + b\v] = a \cdot l[\w] + b \cdot l[\v]
+$$
+
+**Example**
+
+For $\a \in \RR^M$, $\b \in \RR^P$ and $\v \in \RR^P$, let us define
+$$
+l[\v] \coloneqq (\a \b^\top)\v
+$$
+
+<br>
+
+We can always write
+$l[\v] = \bm{A} \v$
+where
+$\bm{A} \coloneqq \a \b^\top \in \RR^{M \times P}$. <br>
+That is, a linear map can always be materialized as a matrix.
+
+<br>
+
+However $l[\v] = (\b^\top \v) \a$ is more efficient.
+
+---
+
+## Adjoint maps
+
+The adjoint of a linear map
+$$
+l \colon \cE \to \cF
+$$
+is another linear map
+$$
+l^\* \colon \cF \to \cE
+$$
+and satisfies
+$$
+\langle l[\v], \u \rangle = \langle \v, l^\*[\u] \rangle
+$$
+<br>
+
+**Continuing the previous example**
+
+For all $\u \in \RR^M$ and $\v \in \RR^P$,
+$$
+\langle \a \b^\top \v, \u \rangle
+=
+\langle \v, \b \a^\top \u \rangle
+$$
+
+Therefore the adjoint of $l[\v] = (\a\b^\top)\v$ is $l^\*[\u] = (b^\top \a) \u$.
+
+---
+
 ## Jacobian-vector products (JVPs)
 
 Suppose $f \colon \cE \to \cF$,
@@ -412,28 +471,6 @@ $$
 
 <br>
 Using the concept of adjoint, this leads to the vector-Jacobian product.
-
----
-
-## Adjoint maps
-
-The adjoint of a linear map
-$$
-l \colon \cE \to \cF
-$$
-is another linear map
-$$
-l^\* \colon \cF \to \cE
-$$
-and satisfies
-$$
-\langle l[\v], \u \rangle = \langle \v, l^\*[\u] \rangle
-$$
-<br>
-The adjoint is the counterpart of transpose for linear maps
-$$
-\langle \bm{A} \v, \u \rangle = \langle \v, \bm{A}^\top \u \rangle
-$$
 
 ---
 
