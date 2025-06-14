@@ -26,9 +26,11 @@ differentiated end-to-end automatically, enabling gradient-based optimization of
 parameters in the program.
 ]
 
+.center.width-50[![](./figures/intro/building_blocks.png)]
+
 ---
 
-## Neural nets as parameterized programs
+## Neural networks as parameterized programs
 
 - A program is defined as the composition of elementary operations.
 - It forms a computation graph.
