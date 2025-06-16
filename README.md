@@ -2,7 +2,7 @@
 
 Slides for the [book](https://arxiv.org/abs/2403.14606) "The Elements of Differentiable Programming".
 
-| Lecture | Topics | Presentation | Handout (printing friendly) |
+| Lecture | Topics | Presentation | Handout (print friendly) |
 | :---: | :---: | :---: | :---: |
 | Introduction | | [link](https://diffprog.github.io/slides/?p=intro.md#1) | [link](https://diffprog.github.io/slides/?p=intro.md&h=1#1) |
 | Part I: Fundamentals | Differentiation <br> Probabilistic learning | [link](https://diffprog.github.io/slides/?p=fundamentals.md#1) | [link](https://diffprog.github.io/slides/?p=fundamentals.md&h=1#1) |
