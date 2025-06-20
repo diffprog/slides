@@ -54,7 +54,7 @@
                 }
 
                 // Check for the 'h=1' parameter to hide increments.
-                const shouldHideIncrements = getParameterByName('h') === '1';
+                const shouldHideIncrements = !(getParameterByName('h') === '0');
 
                 // Define the base options for the slideshow.
                 let slideshowOptions = {
