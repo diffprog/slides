@@ -411,64 +411,146 @@ $$
 
 ---
 
-## Forward-mode autodiff for computation graphs
+## Computation graphs
 
-**Computation chain** 
+<br>
 
-$f\_k$ takes a **single** input $\s\_{k-1}$ <br>
-$\partial f\_k(\s\_k)$ takes a **single** input direction $\t\_{k-1}$
+.center.width-100[![](./figures/differentiable_programs/graph_comput.png)]
+
+<center>Representation of $f(x_1, x_2) \coloneqq x_2e^{x_1}\sqrt{x_1 + x_2 e^{x_1}}$ as a DAG</center>
+
+<br>
+
+---
+
+## Computation graphs
+
+$f\_1, \dots, f\_K$ are in topological order
+$$
+\s\_k \coloneqq f\_k(\s\_{i\_1}, \dots, \s\_{i\_{p\_k}})
+$$
+Each $f\_k$ may take **multiple** inputs $\s\_{i\_1}, \dots, \s\_{i\_{p\_k}}$
+
+<br>
+
+.center.width-50[![](./figures/differentiating_programs/forward_pass_comp_graph.png)]
+
+$$
+(i\_1, \dots, i\_{p\_k}) \coloneqq \mathrm{pa}(k)
+$$
+$$
+(j\_1, \dots, j\_{c\_k}) \coloneqq \mathrm{ch}(k)
+$$
+
+---
+
+## Forward-mode autodiff for computation graphs: an example 
+
+.center.width-80[![](./figures/differentiating_programs/comp_graph_simplified.png)]
 
 $$
 \begin{aligned}
-\s\_k &\coloneqq f\_k(\s\_{k-1}) \\\\
-\t\_k &\coloneqq \partial f\_k(\s\_{k-1})[\t\_{k-1}]
+\t\_0 &\coloneqq \v \\\\
+\t\_1 &\coloneqq \partial f\_1(\s\_0)[\t\_0] \\\\
+\t\_2 &\coloneqq \partial f\_2(\s\_0)[\t\_0] \\\\
+\t\_3 &\coloneqq \partial f\_3(\s\_1)[\t\_1] \\\\
+\t\_4 &\coloneqq \partial f\_4(\s\_2, \s\_3)[\t\_2, \t\_3]
+     = \partial\_1 f\_4(\s\_2, \s\_3)[\t\_2] + 
+       \partial\_2 f\_4(\s\_2, \s\_3)[\t\_3] \\\\
+\t\_5 &\coloneqq \partial f\_5(\s\_1, \s\_4)[\t\_1, \t\_4]
+     = \partial\_1 f\_5(\s\_1, \s\_4)[\t\_1] +
+       \partial\_2 f\_5(\s\_1, \s\_4)[\t\_4] \\\\
+\t\_6 &\coloneqq \partial f\_6(\s\_5)[\t\_5] \\\\
+\t\_7 &\coloneqq \partial f\_7(\s\_4, \s\_6)[\t\_4, \t\_6]
+      = \partial\_1 f\_7(\s\_4, \s\_6)[\t\_4] +
+        \partial\_2 f\_7(\s\_4, \s\_6)[\t\_6].
 \end{aligned}
 $$
 
-**Computation graph** 
+---
 
-$f\_k$ takes **multiple** inputs $\s\_{i\_1}, \dots, \s\_{i\_{p\_k}}$ <br>
-$\partial f\_k(\s\_{i\_1}, \dots, \s\_{i\_{p\_k}})$ takes **multiple** input directions $\t\_{i\_1}, \dots, \t\_{i\_{p\_k}}$ <br>
-where $i\_1, \dots, i\_{p\_k} = \mathrm{pa}(k)$ are the parent nodes
+## Forward-mode autodiff for computation graphs: general case
 
+<br>
+
+$\partial f\_k(\s\_{i\_1}, \dots, \s\_{i\_{p\_k}})$ takes **multiple** input directions $\t\_{i\_1}, \dots, \t\_{i\_{p\_k}}$.
+
+Following the **fan-in** rule of JVPs:
 $$
 \begin{aligned}
-\s\_k &\coloneqq f\_k(\s\_{i\_1}, \dots, \s\_{i\_{p\_k}}) \\\\
 \t\_k &\coloneqq \partial f\_k(\s\_{i\_1}, \dots, \s\_{i\_{p\_k}})[\t\_{i\_1}, \dots, \t\_{i\_{p\_k}}] \\\\
 &= \sum\_{j \in \mathrm{pa}(k)}
 \partial\_j f\_k(\s\_{i\_1}, \dots, \s\_{i\_{p\_k}})[\t\_j]
 \end{aligned}
 $$
 
+<br>
+
+.center.width-100[![](./figures/differentiating_programs/forward_mode_comp_graph.png)]
+
 ---
 
-## Reverse-mode autodiff for computation graphs
+class: middle
 
-**Computation chain** 
+.center.width-90[![](./figures/differentiating_programs/comp_graph_forward_mode_algo.png)]
 
-$\partial f\_k(\s\_{k-1})^\*$ produces a **single** output direction $\r\_k$
+---
+
+## Reverse-mode autodiff for computation graphs: an example 
+
+.center.width-80[![](./figures/differentiating_programs/comp_graph_simplified.png)]
+
 $$
-\r\_{k-1} \coloneqq \partial f\_k(\s\_{k-1})^\*[\r\_k]
+\begin{aligned}
+(\r\_{4 \to 7}, \r\_{6 \to 7}) 
+&\coloneqq \partial f\_7(\s\_4, \s\_6)^\*[\r\_7]
+    \quad &&\r\_7 \coloneqq \u \\\\
+\r\_{5 \to 6} 
+&\coloneqq \partial f\_6(\s\_5)^\*[\r\_6]
+    \quad &&\r\_6 \coloneqq \r\_{6 \to 7} \\\\
+(\r\_{1 \to 5}, \r\_{4 \to 5})
+&\coloneqq \partial f\_5(\s\_1, \s\_4)^\*[\r\_5]
+    \quad &&\r\_5 \coloneqq \r\_{5 \to 6} \\\\
+(\r\_{2 \to 4}, \r\_{3 \to 4})
+&\coloneqq \partial f\_4(\s\_2, \s\_3)^\*[\r\_4]
+    \quad &&\r\_4 \coloneqq \r\_{4 \to 5} + \r\_{4 \to 7} \\\\
+\r\_{1 \to 3}
+&\coloneqq \partial f\_3(\s\_1)^\*[\r\_3]
+    \quad &&\r\_3 \coloneqq \r\_{3 \to 4} \\\\
+\r\_{0 \to 2}
+&\coloneqq \partial f\_2(\s\_0)^\*[\r\_2]
+    \quad &&\r\_2 \coloneqq \r\_{2 \to 4} \\\\
+\r\_{0 \to 1}
+&\coloneqq \partial f\_1(\s\_0)^\*[\r\_1]
+    \quad &&\r\_1 \coloneqq \r\_{1 \to 3} + \r\_{1 \to 5} \\\\
+& && \r\_0 \coloneqq \r\_{0 \to 1} + \r\_{0 \to 2}.
+\end{aligned}
 $$
 
-**Computation graphs**
+---
 
-$\partial f\_k(\s\_{i\_1}, \dots, \s\_{i\_{p\_k}})^\*$ produces **multiple** output variations
+## Reverse-mode autodiff for computation graphs: general case
+
+From the **fan-out** rule of the VJP of the dup (duplicate) operation
 $$
-\deltav\_{i\_1,k}, \dots, \deltav\_{i\_{p\_k},k} 
-= \partial f\_k(\s\_{i\_1}, \ldots, \s\_{i\_{p\_k}})^\*[\r\_k]
+\r\_k \coloneqq \sum\_{i=1}^{c\_k} \r\_{k \rightarrow {j\_i}}
 $$
-where
+
+From the **fan-in** rule of the VJP of $f\_k$
 $$
-\deltav\_{j,k} \coloneqq \partial\_j f\_k(\s\_{i\_1}, \ldots, \s\_{i\_{p\_k}})^\*[\r\_k]
+\r\_{i\_1 \rightarrow k}, \dots, \r\_{i\_{p\_k}  \rightarrow k} 
+= \partial f\_k(\s\_{i\_1 \rightarrow k}, \ldots, \s\_{i\_{p\_k} \rightarrow k})^\*[\r\_k]
 $$
-We then need to sum the variations
-$$
-\r\_k
-\coloneqq \sum\_{j \in \mathrm{ch}(k)} \partial\_j f\_k(\s\_{i\_1}, \ldots,
-\s\_{i\_{p\_k}})^\*[\r\_k]
-= \sum\_{j \in \mathrm{ch}(k)} \deltav_{j,k}
-$$
+
+<br>
+
+.center.width-100[![](./figures/differentiating_programs/reverse_mode_comp_graph.png)]
+
+---
+
+class: middle
+
+.center.width-90[![](./figures/differentiating_programs/comp_graph_reverse_mode_algo.png)]
 
 ---
 
