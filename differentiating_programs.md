@@ -733,13 +733,15 @@ a function $w = w^\star(\lambda)$ locally in a neighborhood.
 
 Provides a way to compute the derivative of $w^\star(\lambda)$, but not $w^\star(\lambda)$ itself.
 
-**Example: the unit circle** 
+**Example: the circle equation** 
 
 $F(x, y) = x^2 + y^2 - 1 = 0$ where $x \equiv w$ and $y \equiv \lambda$
 
 Not a function because for every $y \in [-1, 1]$, $x = \sqrt{1 - y^2}$ or $x = -\sqrt{1 - y^2}$.
 
 But locally around $(x\_0, y\_0)$ for $x\_0 > 0$ and $y\_0 > 0$, we have $x = \sqrt{1 - y^2}$.
+
+.center.width-35[![](./figures/differentiating_programs/ift_circle.png)]
 
 ---
 
@@ -761,7 +763,7 @@ which there is a function $w^\star(\lambda)$ such that
 * $\partial w^\star(\lambda) = -\frac{\partial\_2 F(w^\star(\lambda), \lambda)}{
 \partial\_1 F(w^\star(\lambda), \lambda)}$
 
-**Example: the unit circle** 
+**Example: the circle equation** 
 
 $F(x, y) = x^2 + y^2 - 1 = 0$ where $x \equiv w$ and $y \equiv \lambda$
 
