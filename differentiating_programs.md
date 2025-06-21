@@ -20,6 +20,7 @@ $$
 \gdef\RR{\mathbb{R}}
 \gdef\EE{\mathbb{E}}
 \gdef\PP{\mathbb{P}}
+\gdef\cE{\mathcal{E}}
 \gdef\cS{\mathcal{S}}
 \gdef\cU{\mathcal{U}}
 \gdef\cV{\mathcal{V}}
@@ -551,6 +552,40 @@ $$
 class: middle
 
 .center.width-90[![](./figures/differentiating_programs/comp_graph_reverse_mode_algo.png)]
+
+---
+
+## Baur-Strassen theorem (informal)
+
+Computing efficiently the gradient $\nabla f$ of a function $f \colon \RR^P \to
+\RR$ is the **pillar** upon which **all** modern machine learning relies.
+
+<br>
+
+**Astonishing result**
+
+The time complexity of computing $\nabla f$ is only a constant factor <br>
+the time complexity of computing $f$.
+
+---
+
+## Baur-Strassen theorem (arithmetic circuits)
+
+A polynomial $f$ can be represented as an **arithmetic circuit**.
+
+The size $S(f)$ of $f$ is the number of edges of the smallest graph representing $f$.
+
+<br>
+
+**Theorem**
+
+For all $f \colon \cE \to \RR$
+$$
+S(\nabla f) \le 5 \cdot S(f)
+$$
+
+<br>
+Can be exntended to more general computation graphs.
 
 ---
 
