@@ -65,6 +65,8 @@ $$
 
 <br>
 
+--
+
 **Forward difference** 
 $$
 \partial f(\w)[\v] 
@@ -73,6 +75,8 @@ $$
 $$
 
 <br>
+
+--
 
 **Backward difference**
 $$
@@ -100,11 +104,15 @@ $$
 
 <br>
 
+--
+
 **Truncation error**
 
 Error due to using finite rather than infinitesimal $\delta$.
 
 <br>
+
+--
 
 **Round-off error**
 
@@ -184,6 +192,8 @@ $$
 
 <br>
 
+--
+
 How many **function calls** are needed to compute the gradient?
 
 <br>
@@ -223,6 +233,8 @@ f(\s\_0) &\coloneqq \s\_K
 \end{aligned}
 $$
 
+--
+
 Equivalent to function compositions
 $$
 \begin{aligned}
@@ -246,6 +258,8 @@ $$
 
 <br>
 
+--
+
 As a linear map (JVP)
 $$
 \partial f(\s\_0) 
@@ -258,6 +272,8 @@ $$
 $$
 
 <br>
+
+--
 
 Applying $\partial f(\s\_0)$ on an **input direction** $\v \in \cS\_0$
 $$
@@ -292,6 +308,8 @@ $$
 
 <br>
 
+--
+
 As a linear map (VJP)
 $$
 \partial f(\s\_0)^\* 
@@ -304,6 +322,8 @@ $$
 $$
 
 <br>
+
+--
 
 Applying $\partial f(\s\_0)^\*$ on an **output direction** $\u \in \cS\_K$
 $$
@@ -332,6 +352,8 @@ Consider a function $f \colon \RR^D \to \RR^M$. Its Jacobian is a $M \times D$ m
 
 <br>
 
+--
+
 Extracting the **columns** requires $D$ JVPs with $\e\_j \in \RR^D$
 $$
 \begin{aligned}
@@ -342,6 +364,8 @@ $$
 $$
 
 <br>
+
+--
 
 Extracting the **rows** requires $M$ VJPs with $\e\_i \in \RR^M$
 $$
@@ -361,6 +385,8 @@ $f\_1 \colon \RR^{D\_0} \to \RR^D$ and $f\_K \colon \RR^{D\_{K-1}} \to \RR$
 
 <br>
 
+--
+
 **Forward mode:** we would need $D$ JVPs with $\e\_j \in \RR^D$ for $j \in [D]$
 $$
 \jac f(\s\_0) \e\_j = 
@@ -370,6 +396,8 @@ $$
 $$
 
 <br>
+
+--
 
 **Reverse mode:** we need a single VJP with $\e\_1 = 1 \in \RR$
 
@@ -562,6 +590,8 @@ Computing efficiently the gradient $\nabla f$ of a function $f \colon \RR^P \to
 
 <br>
 
+--
+
 **Astonishing result**
 
 The time complexity of computing $\nabla f$ is only a constant factor <br>
@@ -576,6 +606,8 @@ A polynomial $f$ can be represented as an **arithmetic circuit**.
 The size $S(f)$ of $f$ is the number of edges of the smallest graph representing $f$.
 
 <br>
+
+--
 
 **Theorem**
 
@@ -595,9 +627,13 @@ Can be exntended to more general computation graphs.
 
 Time complexity is optimal for scalar-valued functions but we need to store **all** intermediate values.
 
+--
+
 **Reverse mode with checkpointing**
 
 Trades off computational complexity for better memory, by selectively storing only a **subset** of the intermediate values.
+
+--
 
 Divide-and-conquer strategies:
 * Recursive halving: repeatedly split in half
@@ -768,6 +804,8 @@ a function $w = w^\star(\lambda)$ locally in a neighborhood.
 
 Provides a way to compute the derivative of $w^\star(\lambda)$, but not $w^\star(\lambda)$ itself.
 
+--
+
 **Example: the circle equation** 
 
 $F(x, y) = x^2 + y^2 - 1 = 0$ where $x \equiv w$ and $y \equiv \lambda$
@@ -797,6 +835,8 @@ which there is a function $w^\star(\lambda)$ such that
 
 * $\partial w^\star(\lambda) = -\frac{\partial\_2 F(w^\star(\lambda), \lambda)}{
 \partial\_1 F(w^\star(\lambda), \lambda)}$
+
+--
 
 **Example: the circle equation** 
 
@@ -939,12 +979,17 @@ F(\thetav)
 $$
 
 <br>
-Example: smoothing a differentiable almost everywhere function by perturbation
+
+--
+
+**Example:** smoothing a differentiable almost everywhere function by perturbation
 $$
 F(\thetav; \x) \coloneqq \EE\_{Z \sim p}[g(\x + Z, \thetav)]
 $$
 
 <br>
+
+--
 
 The gradient **is** in expectation form
 $$
@@ -967,12 +1012,17 @@ E(\thetav) \coloneqq \EE\_{Y \sim p\_\thetav}[g(Y)]
 $$
 
 <br>
-Example: reinforcement learning (RL)
+
+--
+
+**Example:** reinforcement learning (RL)
 $$
 E(\thetav; \x) \coloneqq \EE\_{Y \sim p\_\thetav}[\mathrm{reward}(\x, Y)]
 $$
 
 <br>
+
+--
 
 The gradient **is not** in expectation form
 $$
@@ -998,6 +1048,8 @@ $$
 
 <br>
 
+--
+
 we can rewrite the gradient of
 $$
 E(\thetav) 
@@ -1019,6 +1071,9 @@ $$
 E(\mu, \sigma)
 \coloneqq \EE\_{U \sim \mathrm{Normal}(\mu, \sigma^2)}[g(U)]
 $$
+
+--
+
 Using
 $$
 U \sim \mathrm{Normal}(\mu, \sigma^2)
@@ -1030,6 +1085,9 @@ $$
 E(\mu, \sigma) 
 = \EE\_{Z \sim \mathrm{Normal}(0, 1)}[g(\mu + \sigma Z)]
 $$
+
+--
+
 and therefore
 $$
 \begin{aligned}
@@ -1068,6 +1126,8 @@ Suppose $U \coloneqq T(Z, \thetav)$, where $T$ is a differentiable transform.
 
 <br>
 
+--
+
 Let us define
 $$
 E(\thetav) \coloneqq \EE\_{U \sim p\_\thetav}[g(U)]
@@ -1075,6 +1135,8 @@ E(\thetav) \coloneqq \EE\_{U \sim p\_\thetav}[g(U)]
 $$
 
 <br>
+
+--
 
 Then
 $$
@@ -1094,6 +1156,8 @@ $$
 - $g$ can be defined on $\cY$
 - High variance
 
+--
+
 **Path gradient estimator (PGE)**
 - Needs to sample from $p\_\thetav$ (after change of variable)
 - No need for $\log p\_\thetav(\y)$
@@ -1107,12 +1171,14 @@ $$
 
 Suppose $Z \sim p$, where $p$ is a distribution over $\cZ$. 
 Given a continuous map $T \colon \cZ \to \cU$, 
-the pushforward distribution of $p$ through $T$
+the **pushforward distribution** of $p$ through $T$
 is the distribution $q$ according to which 
 $U \coloneqq T(Z) \in \cU$ is distributed, 
 i.e., $U \sim q$.
 
 <br>
+
+--
 
 **Easy to sample from**
 
@@ -1142,6 +1208,8 @@ $Z \sim p$, where $p$ is a distribution over $\cZ$, with PDF $p\_Z$.
 Let $T \colon \cZ \to \cU$ be a **diffeomorphism**
 (i.e., an invertible and differentiable map).
 
+--
+
 The pushforward distribution of $p$ through $T$ is the distribution $q$ 
 such that 
 $$
@@ -1154,6 +1222,8 @@ $$
 where $\partial T^{-1}(\u)$ is the Jacobian of $T^{-1} \colon \cU \to \cZ$.
 
 <br>
+
+--
 
 **Normalizing flows** are parametrized transformations $T$ designed such that
 $T^{-1}$ and its Jacobian $\partial T^{-1}$ are easy to compute.
