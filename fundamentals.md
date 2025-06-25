@@ -658,11 +658,15 @@ Predict $\y \in \cY$ from $\x \in \cX$
 
 <br>
 
+--
+
 **Input space**
 
 $\cX \subseteq \RR^D$
 
 <br>
+
+--
 
 **Output space**
 
@@ -683,6 +687,8 @@ Learn a mapping $\cX \to \cY$
 
 <br>
 
+--
+
 **Probabilistic approach** 
 
 Learn a mapping $f \coloneqq \cX \to \Lambda$
@@ -693,6 +699,8 @@ $$
 Y &\sim p\_\lambdav
 \end{aligned}
 $$
+
+--
 
 *Inference*
 
@@ -716,6 +724,8 @@ $$
 
 <br>
 
+--
+
 **Probabilistic approach**
 
 $$
@@ -728,6 +738,12 @@ $$
 <br>
 
 Negative log-likelihood: $\ell(\lambdav, \y) \coloneqq -\log p\_\lambdav(\y)$
+
+---
+
+class: middle
+
+.center.width-70[![](./figures/fundamentals/deter_vs_proba.png)]
 
 ---
 
@@ -826,6 +842,8 @@ $\thetav$: natural parameters, $\phi$: sufficient statistic, $h$: base measure, 
 
 We can usually convert from original parameters $\lambdav$ to natural parameters $\thetav$.
 
+--
+
 **Example:** Bernoulli distribution with original parameter $\lambda = \pi$
 
 $$
@@ -866,9 +884,13 @@ $$
 
 <br>
 
+--
+
 $A(\thetav)$ is a convex function
 
 <br>
+
+--
 
 The gradient $\nabla A(\thetav)$ is the expectation
 $$
@@ -890,6 +912,8 @@ A convex function w.r.t. $\thetav$
 
 <br>
 
+--
+
 **Gradient**
 $$
 -\nabla\_\thetav \log p\_\thetav(\y)
@@ -900,9 +924,19 @@ First moment matching!
 
 <br>
 
+--
+
 **Objective function**
 $$
 L(\w) \coloneqq -\sum\_{i=1}^N \log p\_{\thetav\_i}(\y\_i)
 $$
 where $\thetav\_i \coloneqq f(\x\_i, \w)$
 
+---
+
+class: middle
+
+
+.center.width-100[![](./figures/fundamentals/exp_family.png)]
+
+.center[Generalized linear models]
