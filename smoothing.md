@@ -44,11 +44,15 @@ $$
 
 <br>
 
+--
+
 **Link with classical convolution**
 
 Counterpart of convolution where **integration** is replaced with **minimization**.
 
 <br>
+
+--
 
 **Commutativity**
 
@@ -60,6 +64,8 @@ $$
 
 The change of variable $\u \coloneqq \muv + \z$ is the **location-scale transform**.
 
+--
+
 **How to compute it?**
 
 Analytically or numerically using an optimization algorithm
@@ -69,6 +75,8 @@ Analytically or numerically using an optimization algorithm
 ## Moreau envelope
 
 The Moreau envelope of a function $f$ is a **smooth approximation** of it.
+
+--
 
 It is equal to the infimum colution of $f$ with $R(\z) \coloneqq \frac{1}{2} \\|\z\\|^2$
 
@@ -81,6 +89,8 @@ $$
 &= \inf\_{\u, \z \in \RR^M} f(\u) + R(\z) \text{ s.t. } \u = \muv + \z.
 \end{aligned}
 $$
+
+--
 
 Compare with the proximal operator of $f$
 $$
@@ -152,6 +162,8 @@ Go to the dual $f^\*$, add regularization $R^\*$ and come back to the primal.
 
 The dual approach is often more convenient.
 
+--
+
 **Example: smoothed ReLU**
 
 * $f(u) = \max(u, 0)$
@@ -185,6 +197,8 @@ Can be seen as some **moving average**.
 
 <br>
 
+--
+
 **Commutativity**
 
 $$
@@ -194,6 +208,8 @@ $$
 $$
 
 <br>
+
+--
 
 This is again using the location-scale transform $u \coloneqq \mu + z$.
 
@@ -224,6 +240,8 @@ p\_{\mu,\sigma}(u)
 = \frac{1}{\sqrt{2\pi}\sigma} e^{-\frac{1}{2} (\frac{\mu - u}{\sigma})^2}
 $$
 
+--
+
 **Averaging perspective**
 
 $$
@@ -236,6 +254,8 @@ $$
 \end{aligned}
 $$
 $U$ is a Gaussian distributed random variable centered around $\mu$.
+
+--
 
 **Perturbation perspective**
 
@@ -263,12 +283,16 @@ $$
 
 <br>
 
+--
+
 **Convolution theorem**
 $$
 \cF\\{f \ast g\\} = \cF\\{f\\} \cdot \cF\\{g\\}
 $$
 
 <br>
+
+--
 
 **Gaussian smoothing**
 
@@ -296,6 +320,8 @@ Can be estimated by Monte-Carlo.
 
 <br>
 
+--
+
 **Gradient estimation by pathwise gradient estimator**
 
 $$
@@ -305,6 +331,8 @@ $$
 Assumes that $f$ is differentiable (almost everywhere).
 
 <br>
+
+--
 
 **Gradient estimation by score function estimator**
 
@@ -332,6 +360,8 @@ where $\gamma \approx 0.577$ is Euler's constant.
 
 We use a **centered** definition, such that $\EE[Z] = 0$.
 
+--
+
 **Gumbel distribution with mean $\muv$ and scale $\sigma$**
 $$
 U \sim \mathrm{Gumbel}(\muv, \sigma) 
@@ -348,6 +378,8 @@ $$
 $Z \sim \mathrm{Gumbel}(\zeros, 1) \in \RR^M$
 
 <br>
+
+--
 
 **Perturbed argmax**
 
@@ -367,6 +399,8 @@ $$
 $$
 
 <br>
+
+--
 
 **Perturbed max**
 
@@ -388,7 +422,7 @@ $$
 
 ---
 
-## Gumbel softargmax
+## Gumbel softargmax (1/2)
 
 Suppose we want to smooth out the **composition** 
 $h(\u) \coloneqq g(\y(\u))$ between some function 
@@ -398,6 +432,9 @@ $$
 $$
 
 <br>
+
+--
+
 We can do so by
 $$
 h\_\sigma(\muv) 
@@ -405,6 +442,9 @@ h\_\sigma(\muv)
 $$
 
 <br>
+
+--
+
 How to compute the gradient $\nabla h\_\sigma(\muv)$? 
 
 * We could use SFE but it has high variance.
@@ -413,7 +453,7 @@ How to compute the gradient $\nabla h\_\sigma(\muv)$?
 
 ---
 
-## Gumbel softargmax
+## Gumbel softargmax (2/2)
 
 **Key idea:** replace argmax with softargmax
 $$
@@ -423,11 +463,15 @@ $$
 
 <br>
 
+--
+
 **Pros**
 * Low variance gradient estimator
 * $\nabla h\_{\sigma,\tau}(\muv) \to h\_\sigma(\muv)$ as $\tau \to 0$
 
 <br>
+
+--
 
 **Cons**
 * Introduces an additional temperature parameter $\tau$
