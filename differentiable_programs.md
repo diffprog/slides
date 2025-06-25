@@ -57,6 +57,8 @@ f(\s\_0) &\coloneqq \s\_K
 \end{aligned}
 $$
 
+--
+
 Equivalent to function compositions
 $$
 \begin{aligned}
@@ -109,6 +111,8 @@ where
 
 <br>
 
+--
+
 We can see an MLP as a generalized linear model (GLM) <br>
 $\s\_{K-1} \mapsto a\_K(\bm{W}\_K \s\_{K-1} + \bm{b}\_K)$
 on top of a learned representation $\s_{K-1}$.
@@ -158,7 +162,7 @@ $$
 \in \RR
 $$
 
-.center.width-90[![](./figures/differentiable_programs/max_softmax_3d.png)]
+.center.width-85[![](./figures/differentiable_programs/max_softmax_3d.png)]
 
 ---
 
@@ -172,7 +176,7 @@ class: middle
 
 "S"-shaped functions for squashing $\RR$ to $[0,1]$
 
-Binary step function a.k.a.  Heaviside step function
+**Binary step** function a.k.a.  **Heaviside** step function
 $$
 \mathrm{step}(u) \coloneqq
 \begin{cases} 
@@ -183,7 +187,7 @@ $$
 $$
 
 
-Logistic function
+**Logistic function**
 $$
 \mathrm{logistic}(u) 
 \coloneqq \frac{1}{1 + e^{-u}}
@@ -196,14 +200,14 @@ $$
 
 ## Probability mappings: argmax and softargmax
 
-Argmax layer, denoting $\phi(j) \coloneqq \e\_j$
+**Argmax** layer, denoting $\phi(j) \coloneqq \e\_j$
 $$
 \mathrm{argmax}(\u) \coloneqq \phi\left(\argmax\_{j \in [M]} u\_j\right) 
 \in \\{\e\_1, \dots, \e\_M\\}
 $$
 
 
-Softargmax layer
+**Softargmax** layer
 $$
 \mathrm{softargmax}(\u) \coloneqq \frac{\exp(\u)}{\sum\_{j=1}^M \exp(u\_j)}
 \in \mathrm{relint}(\triangle^M)
@@ -308,7 +312,7 @@ name: controlFlows
 
 ## Inequality operators
 
-Greater than
+**Greater than**
 $$
 \mathrm{gt}(u\_1, u\_2)
 \coloneqq
@@ -319,7 +323,7 @@ $$
 = \mathrm{step}(u\_1 - u\_2)
 $$
 
-Less than
+**Less than**
 $$
 \mathrm{lt}(u\_1, u\_2)
 \coloneqq
@@ -336,7 +340,7 @@ $$
 
 ## Equality operators
 
-Equal
+**Equal**
 $$
 \mathrm{eq}(u\_1, u\_2)
 \coloneqq
@@ -347,7 +351,7 @@ $$
 = \mathrm{step}(u\_2 - u\_1) \cdot \mathrm{step}(u\_1 - u\_2) \\
 $$
 
-Not equal
+**Not equal**
 $$
 \mathrm{neq}(u\_1, u\_2)
 \coloneqq
@@ -443,6 +447,8 @@ $\Rightarrow \mathrm{gt}\_\sigma(\mu\_1, \mu\_2)
 = \Phi\left(\frac{\mu\_1-\mu\_2}{\sigma}\right)$
 <br><br>
 
+--
+
 --- 
 
 If 
@@ -459,7 +465,7 @@ $\Rightarrow \mathrm{gt}\_\sigma(\mu\_1, \mu\_2)
 
 ## Soft equality operators
 
-We can use a normalized kernel
+We can use a normalized **kernel**
 $\kappa\_\sigma$ (logistic, Gaussian) centered on zero.
  
 $$
@@ -558,7 +564,7 @@ $$
 
 ## Probabilistic interpretation
 
-Le $Y$ and $Y'$ be two independent random variables distributed according to
+Le $Y$ and $Y'$ be two **independent** random variables distributed according to
 **Bernoulli** distributions with parameter $\pi$ and $\pi'$.
 
 <br>
@@ -616,8 +622,8 @@ $$
 
 <br>
 
-* $\pi$ is called the predicate (**binary** variable)
-* $\v\_0$ and $\v\_1$ are the branches (real variables)
+* $\pi$ is called the **predicate** (binary variable)
+* $\v\_0$ and $\v\_1$ are the **branches** (real variables)
 
 ---
 
@@ -660,7 +666,9 @@ f\_s(p, \u\_1, \u\_0)
 \end{aligned}
 $$
 
-Probabilistic interpretation
+--
+
+**Probabilistic interpretation**
 $$
 f\_s(p, \u\_1, \u\_0) 
 = \EE\_{i \sim \mathrm{Bernoulli}(\mathrm{sigmoid}\_\sigma(p))}\left[g\_i(\u\_i)\right]
@@ -686,6 +694,8 @@ $$
 $\pi\_a \coloneqq \mathrm{sigmoid}\_\sigma(x-a)$,
 $\pi\_b \coloneqq \mathrm{sigmoid}\_\sigma(b-x)$
 
+--
+
 **Local smoothing approach**
 $$
 \begin{aligned}
@@ -696,6 +706,9 @@ f^{\mathrm{loc}}\_\sigma(x, y, z)
 &= \pi\_a \pi\_b y + (1-\pi\_a\pi\_b)z 
 \end{aligned}
 $$
+
+--
+
 **Global smoothing approach**
 $$
 \begin{aligned}
@@ -774,9 +787,11 @@ f\_s(\p, \u\_1, \dots, \u\_K)
 \mathrm{cond}(\mathrm{softargmax}(\p), g\_1(\u\_1), \dots, g\_K(\u\_K))
 $$
 
+--
+
 <br>
 
-Probabilistic interpretation
+**Probabilistic interpretation**
 $$
 f\_s(\p, \u\_1, \dots, \u\_K)
 = \EE\_{i \sim \mathrm{Categorical}(\mathrm{softargmax}(\p))}\left[g\_i(\u\_i)\right]
@@ -789,6 +804,10 @@ $$
 Sequentially calling a fixed number $K$ of functions, reusing the output from the previous iteration.
 
 .center.width-60[![](./figures/differentiable_programs/for_loop.png)]
+
+--
+
+**Feedforward networks**
 
 .center.width-70[![](./figures/differentiable_programs/for_loop_graph.png)]
 
@@ -843,6 +862,10 @@ while carrying the result $\s\_k$ to the next iteration.
 
 .center.width-70[![](./figures/differentiable_programs/scan.png)]
 
+--
+
+**RNNs**
+
 .center.width-70[![](./figures/differentiable_programs/scan_graph.png)]
 
 .center[Seq-to-seq RNNs are essentially parameterized scans!]
@@ -867,6 +890,8 @@ until a certain condition is met.
 We can unroll a while loop for $T$ iterations to form an **acyclic** graph (here $T=3$)
 
 .center.width-50[![](./figures/differentiable_programs/unrolled_while_loop.png)]
+
+--
 
 $$
 \textcolor{black}{\bm{r}
