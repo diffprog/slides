@@ -302,8 +302,8 @@ $$
 Consider $f:\RR^P \rightarrow\RR^M$ and $L:\RR^M \rightarrow \RR$. Then,
 $$
 \nabla (L \circ f)(\w) 
-= \jac L(f(\w)) \jac f(\w)
-= \jac f(\w)^\top \nabla L(f(\w))
+= \Big(\underbrace{\jac L(f(\w))}\_{\RR^{1 \times M}} \underbrace{\jac f(\w)}\_{\RR^{M \times P}}\Big)^\top
+= \underbrace{\jac f(\w)^\top}\_{\RR^{P \times M}} \underbrace{\nabla L(f(\w))}\_{\RR^{M \times 1}}
 $$
 
 *Example:* $L$: loss function, $f$: neural network
@@ -313,7 +313,7 @@ $$
 
 ## The need for linear maps
 
-Suppose we want to differentiate a function $f \colon \RR^{M \times D} \to M$ defined by
+Suppose we want to differentiate a function $f \colon \RR^{M \times D} \to \RR^M$ defined by
 $$f(\bm{W}) \coloneqq \bm{W} \x$$
 where $\bm{W} \in \RR^{M \times D}$ and $\x \in \RR^D$
 
@@ -340,12 +340,16 @@ $$
 l[a\w + b\v] = a \cdot l[\w] + b \cdot l[\v]
 $$
 
+--
+
 **Example**
 
 For $\a \in \RR^M$, $\b \in \RR^P$ and $\v \in \RR^P$, let us define
 $$
 l[\v] \coloneqq (\a \b^\top)\v
 $$
+
+--
 
 <br>
 
@@ -354,6 +358,8 @@ $l[\v] = \bm{A} \v$
 where
 $\bm{A} \coloneqq \a \b^\top \in \RR^{M \times P}$. <br>
 That is, a linear map can always be materialized as a matrix.
+
+--
 
 <br>
 
@@ -376,6 +382,8 @@ $$
 \langle l[\v], \u \rangle = \langle \v, l^\*[\u] \rangle
 $$
 <br>
+
+--
 
 **Continuing the previous example**
 
